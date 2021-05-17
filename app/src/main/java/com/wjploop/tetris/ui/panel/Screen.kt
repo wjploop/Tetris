@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_H
 import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_W
+import com.wjploop.tetris.ui.gamer.LocalGameControl
 import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickSize
 import com.wjploop.tetris.ui.material.BrickType
@@ -82,7 +83,9 @@ private fun PlayerPad(playPanelWidth: Dp) {
             mutableStateOf(8)
         }
 
-        var data: List<List<Int>> = countData(count = count)
+        val gameControl = LocalGameControl.current
+
+        val data = gameControl.data
 
         Column {
 
@@ -108,7 +111,7 @@ private fun PlayerPad(playPanelWidth: Dp) {
             onClick = {
                 scope.launch {
                     count++
-                    data = countData(count = count)
+                    gameControl.data = countData(count = count)
                 }
             }) {
             Text("Count $count")

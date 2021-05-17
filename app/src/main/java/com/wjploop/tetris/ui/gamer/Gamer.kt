@@ -1,12 +1,12 @@
 package com.wjploop.tetris.ui.gamer
 
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.*
 
 ///the height of game pad
-val GAME_PAD_MATRIX_H = 20;
+const val GAME_PAD_MATRIX_H = 20
 
 ///the width of game pad
-val GAME_PAD_MATRIX_W = 10;
+const val GAME_PAD_MATRIX_W = 10
 
 enum class GameState {
     ///随时可以开启一把惊险而又刺激的俄罗斯方块
@@ -36,8 +36,10 @@ enum class GameState {
 }
 
 @Immutable
-data class GameModel(
-    val data: List<List<Int>> = listOf(),
+data class GameControl(
+    val gameState: GameState = GameState.none,
+
+    var data: List<List<Int>> = listOf(),
     val mask: List<List<Int>> = listOf(),
 
     val level: Int = 1,
@@ -45,5 +47,21 @@ data class GameModel(
     val clear: Int = 0,
 
     )
+
+val LocalGameControl = compositionLocalOf<GameControl> {
+    error("no find game control on this tree")
+}
+
+@Composable
+fun Game(
+    child: @Composable () -> Unit
+) {
+    CompositionLocalProvider(
+        LocalGameControl provides GameControl()
+    ) {
+        child()
+    }
+
+}
 
 
