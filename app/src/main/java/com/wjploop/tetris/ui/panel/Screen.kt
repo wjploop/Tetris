@@ -1,6 +1,5 @@
 package com.wjploop.tetris.ui.panel
 
-import androidx.compose.animation.core.repeatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,14 +15,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_H
 import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_W
+import com.wjploop.tetris.ui.gamer.GameData
 import com.wjploop.tetris.ui.gamer.LocalGameControl
 import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickSize
 import com.wjploop.tetris.ui.material.BrickType
 import com.wjploop.tetris.ui.material.LocalBrickSize
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.reflect.Array.get
 
 val SCREEN_BACKGROUND = Color(0xff9ead86)
 
@@ -60,7 +59,11 @@ fun Screen(width: Dp) {
 }
 
 @Composable
-private fun PlayerPad(playPanelWidth: Dp) {
+fun PlayerPad(playPanelWidth: Dp, gameData:GameData = LocalGameControl.current
+) {
+
+
+
     BoxWithConstraints(
         Modifier
             .size(width = playPanelWidth, (playPanelWidth * 2))
@@ -83,9 +86,8 @@ private fun PlayerPad(playPanelWidth: Dp) {
             mutableStateOf(8)
         }
 
-        val gameControl = LocalGameControl.current
+        val data = gameData.data
 
-        val data = gameControl.data
 
         Column {
 
@@ -106,15 +108,21 @@ private fun PlayerPad(playPanelWidth: Dp) {
         }
 
         val scope = rememberCoroutineScope()
+        val composable = currentRecomposeScope
         Button(
             modifier = Modifier.align(Alignment.BottomEnd),
+
             onClick = {
                 scope.launch {
-                    count++
-                    gameControl.data = countData(count = count)
+//                    count++
+                    repeat(100){
+                        gameData.data = countData(it)
+                        composable.invalidate()
+                        delay(1000)
+                    }
                 }
             }) {
-            Text("Count $count")
+            Text("Level ${LocalGameControl.current.level}")
         }
     }
 }

@@ -35,20 +35,26 @@ enum class GameState {
     drop,
 }
 
-@Immutable
-data class GameControl(
+data class GameData(
     val gameState: GameState = GameState.none,
 
     var data: List<List<Int>> = listOf(),
     val mask: List<List<Int>> = listOf(),
 
-    val level: Int = 1,
+
+    var level: Int = 1,
     val points: Int = 0,
     val clear: Int = 0,
+    var count: MutableState<Int> = mutableStateOf(0),
+) {
+    init {
+        data = Array(GAME_PAD_MATRIX_H) {
+            IntArray(GAME_PAD_MATRIX_W) { -1 }.toList()
+        }.toList()
+    }
+}
 
-    )
-
-val LocalGameControl = compositionLocalOf<GameControl> {
+val LocalGameControl = compositionLocalOf<GameData> {
     error("no find game control on this tree")
 }
 
@@ -57,11 +63,10 @@ fun Game(
     child: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalGameControl provides GameControl()
+        LocalGameControl provides GameData()
     ) {
         child()
     }
-
 }
 
 
