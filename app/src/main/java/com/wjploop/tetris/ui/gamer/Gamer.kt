@@ -1,5 +1,6 @@
 package com.wjploop.tetris.ui.gamer
 
+import android.opengl.GLSurfaceView
 import androidx.compose.runtime.*
 
 ///the height of game pad
@@ -38,19 +39,39 @@ enum class GameState {
 data class GameData(
     val gameState: GameState = GameState.none,
 
-    var data: List<List<Int>> = listOf(),
-    val mask: List<List<Int>> = listOf(),
+    val data: Array<IntArray> = emptyArray(),
 
-
-    var level: Int = 1,
+    val level: Int = 1,
     val points: Int = 0,
     val clear: Int = 0,
-    var count: MutableState<Int> = mutableStateOf(0),
+
+    val next: Block,
+    val onNewGameSate: (GameState) -> Unit,
 ) {
-    init {
-        data = Array(GAME_PAD_MATRIX_H) {
-            IntArray(GAME_PAD_MATRIX_W) { -1 }.toList()
-        }.toList()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as GameData
+
+        if (gameState != other.gameState) return false
+        if (!data.contentDeepEquals(other.data)) return false
+        if (level != other.level) return false
+        if (points != other.points) return false
+        if (clear != other.clear) return false
+        if (next != other.next) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = gameState.hashCode()
+        result = 31 * result + data.contentDeepHashCode()
+        result = 31 * result + level
+        result = 31 * result + points
+        result = 31 * result + clear
+        result = 31 * result + next.hashCode()
+        return result
     }
 }
 
@@ -60,10 +81,47 @@ val LocalGameControl = compositionLocalOf<GameData> {
 
 @Composable
 fun Game(
+
     child: @Composable () -> Unit
 ) {
+
+    val data: Array<IntArray> = emptyArray()
+    val mixed: Array<IntArray> = emptyArray()
+
+
+
+    var current: Block
+    val next = Block.random()
+
+    fun onNewGameState(state: GameState) {
+
+    }
+    var (gameData, setGameData) = remember {
+        mutableStateOf(
+            GameData(onNewGameSate = {
+                onNewGameState(it)
+            }, next = next)
+        )
+    }
+
+
+//    fun computeNextData(): Array<IntArray> {
+//
+//        val newData = IntArray(GAME_PAD_MATRIX_H) { y ->
+//            for (x in 0 until GAME_PAD_MATRIX_W) {
+//                val row = IntArray(GAME_PAD_MATRIX_W)
+//                if (current.occupy(x, y)) {
+//
+//                } else {
+//                    row[x] = gameData.data[]
+//                }
+//            }
+//        }
+//    }
+
+
     CompositionLocalProvider(
-        LocalGameControl provides GameData()
+        LocalGameControl provides gameData
     ) {
         child()
     }

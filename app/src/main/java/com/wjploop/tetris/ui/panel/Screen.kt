@@ -61,9 +61,6 @@ fun Screen(width: Dp) {
 @Composable
 fun PlayerPad(playPanelWidth: Dp, gameData:GameData = LocalGameControl.current
 ) {
-
-
-
     BoxWithConstraints(
         Modifier
             .size(width = playPanelWidth, (playPanelWidth * 2))
@@ -96,9 +93,10 @@ fun PlayerPad(playPanelWidth: Dp, gameData:GameData = LocalGameControl.current
                     cols.mapIndexed { j, row ->
                         Brick(
                             brickType = when (data[i][j]) {
+                                0 -> BrickType.empty
+                                1 -> BrickType.normal
+                                2 -> BrickType.hilight
                                 -1 -> BrickType.empty
-                                0 -> BrickType.normal
-                                1 -> BrickType.hilight
                                 else -> throw Exception("no such brickType: $row")
                             }
                         )
