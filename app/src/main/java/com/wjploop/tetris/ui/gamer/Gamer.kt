@@ -1,7 +1,11 @@
 package com.wjploop.tetris.ui.gamer
 
-import android.opengl.GLSurfaceView
+import android.util.Log
 import androidx.compose.runtime.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -45,8 +49,8 @@ data class GameData(
     val points: Int = 0,
     val clear: Int = 0,
 
-    val next: Block,
-    val onNewGameSate: (GameState) -> Unit,
+    val next: Block? = null,
+    val onNewGameSate: (GameState) -> Unit = {},
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -75,56 +79,219 @@ data class GameData(
     }
 }
 
-val LocalGameControl = compositionLocalOf<GameData> {
-    error("no find game control on this tree")
+val LocalGameData = compositionLocalOf<GameData> {
+    error("no find game data")
+}
+
+
+val LocalGamer = compositionLocalOf<Gamer> {
+    error("no find gamer")
+}
+
+// 用于处理游戏状态迁移
+// 接收来孩子节点的Event，更新后，更新时返回一个新的GameData
+class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) {
+
+    private val data: Array<IntArray> = Array(GAME_PAD_MATRIX_H) {
+        IntArray(GAME_PAD_MATRIX_W)
+    }
+    private val mask: Array<IntArray> = Array(GAME_PAD_MATRIX_H) {
+        IntArray(GAME_PAD_MATRIX_W)
+    }
+
+    var level = 0
+
+    var state = GameState.none
+
+    var current: Block? = null
+
+    var next = Block.random()
+
+    fun pauseOrResume() {
+        if (state == GameState.running) {
+            pause()
+        } else if (state in arrayOf(GameState.none, GameState.paused)) {
+            startGame()
+        }
+    }
+
+    fun startGame() {
+        autoFall()
+    }
+
+    private fun pause() {
+
+    }
+
+
+    private fun getNextBlock(): Block {
+        return Block.random().also {
+            next = it
+        }
+    }
+
+    fun onNewGameState(state: GameState) {
+        gameScope.launch {
+//            delay(1000)
+//            level++
+            Log.d("wolf", "level $level")
+
+            Log.d("wolf", formatMatrix(data))
+
+            setGameData(
+                GameData(
+                    gameState = this@Gamer.state,
+                    data = computeData(),
+                    level = level,
+                    0,
+                    0,
+                    next = next,
+                    onNewGameSate = {
+                        onNewGameState(it)
+                    })
+            )
+        }
+    }
+
+
+    private fun computeData(): Array<IntArray> {
+        val newData = Array(GAME_PAD_MATRIX_H) { y ->
+            val row = IntArray(GAME_PAD_MATRIX_W)
+            for (x in 0 until GAME_PAD_MATRIX_W) {
+                var value = if (current?.occupy(y, x) == true) {
+                    1
+                } else {
+                    data[y][x]
+                }
+                if (mask[y][x] == -1) {
+                    value = 0
+                } else if (mask[y][x] == 1) {
+                    value = 2
+                }
+                row[x] = value
+            }
+            row
+        }
+        return newData
+    }
+
+
+    private fun mixCurrentInToData() {
+        fallJob?.cancel()
+
+        // 更新data，将current混入原来的data
+        performActionOnPad { i, j ->
+            data[i][j] = if (current?.occupy(i, j) == true) 1 else data[i][j]
+            false
+        }
+
+        // 检查data是否有可以清楚行
+        val clearLines = mutableListOf<Int>()
+        data.forEachIndexed { index, row ->
+            if (row.all { it == 1 }) {
+                clearLines.add(index)
+            }
+        }
+
+        if (clearLines.isNotEmpty()) {
+            Log.d("wolf", "mixed and clear lines $clearLines")
+        } else {
+            Log.d("wolf", "mixed no clear")
+            onNewGameState(GameState.mixing)
+            performActionOnPad { i, j ->
+                mask[i][j] = if (current?.occupy(i, j) == true) {
+                    1
+                } else {
+                    mask[i][j]
+                }
+                false
+            }
+            gameScope.launch {
+                delay(200)
+                performActionOnPad { i, j ->
+                    mask[i][j] = 0
+                    false
+                }
+            }
+
+        }
+
+        // current 已经融入data
+        current = null
+
+        // 砖块触顶，结束游戏
+        if (data[0].contains(1)) {
+            
+        } else {
+
+            startGame()
+        }
+
+    }
+
+    fun down() {
+        current?.fall()?.let {
+            if (it.isNotConflict(data)) {
+                current = it
+                onNewGameState(GameState.running)
+            } else {
+                mixCurrentInToData()
+            }
+        }
+
+    }
+
+    var fallJob: Job? = null
+
+    private fun autoFall() {
+        current = current ?: getNextBlock()
+        fallJob = gameScope.launch {
+            while (true) {
+                delay(1000)
+                down()
+            }
+        }
+    }
+}
+
+private fun formatMatrix(matrix: Array<IntArray>): String {
+    return "matrix:\n" + matrix.contentDeepToString().drop(1).dropLast(1).replace("], ", "]\n")
 }
 
 @Composable
 fun Game(
-
     child: @Composable () -> Unit
 ) {
-
-    val data: Array<IntArray> = emptyArray()
-    val mixed: Array<IntArray> = emptyArray()
-
-
-
-    var current: Block
-    val next = Block.random()
-
-    fun onNewGameState(state: GameState) {
-
-    }
-    var (gameData, setGameData) = remember {
+    val (gameData, setGameData) = remember {
         mutableStateOf(
-            GameData(onNewGameSate = {
-                onNewGameState(it)
-            }, next = next)
+            GameData(data = Array(GAME_PAD_MATRIX_H) {
+                IntArray(GAME_PAD_MATRIX_W)
+            })
         )
     }
+    val gameScope = rememberCoroutineScope()
 
-
-//    fun computeNextData(): Array<IntArray> {
-//
-//        val newData = IntArray(GAME_PAD_MATRIX_H) { y ->
-//            for (x in 0 until GAME_PAD_MATRIX_W) {
-//                val row = IntArray(GAME_PAD_MATRIX_W)
-//                if (current.occupy(x, y)) {
-//
-//                } else {
-//                    row[x] = gameData.data[]
-//                }
-//            }
-//        }
-//    }
-
+    val gamer = remember {
+        Gamer(gameScope = gameScope, setGameData = setGameData)
+    }
 
     CompositionLocalProvider(
-        LocalGameControl provides gameData
+        LocalGameData provides gameData,
+        LocalGamer provides gamer
     ) {
         child()
     }
 }
 
 
+fun performActionOnPad(action: (i: Int, j: Int) -> Boolean) {
+
+    for (i in 0 until GAME_PAD_MATRIX_H) {
+        for (j in 0 until GAME_PAD_MATRIX_W) {
+            val shouldBreak = action(i, j)
+            if (shouldBreak) {
+                break
+            }
+        }
+    }
+}

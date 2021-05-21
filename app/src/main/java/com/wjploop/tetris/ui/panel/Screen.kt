@@ -13,16 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_H
-import com.wjploop.tetris.ui.gamer.GAME_PAD_MATRIX_W
-import com.wjploop.tetris.ui.gamer.GameData
-import com.wjploop.tetris.ui.gamer.LocalGameControl
+import com.wjploop.tetris.ui.gamer.*
 import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickSize
 import com.wjploop.tetris.ui.material.BrickType
 import com.wjploop.tetris.ui.material.LocalBrickSize
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 val SCREEN_BACKGROUND = Color(0xff9ead86)
 
@@ -59,7 +54,9 @@ fun Screen(width: Dp) {
 }
 
 @Composable
-fun PlayerPad(playPanelWidth: Dp, gameData:GameData = LocalGameControl.current
+fun PlayerPad(
+    playPanelWidth: Dp, gameData: GameData = LocalGameData.current,
+    gamer: Gamer = LocalGamer.current
 ) {
     BoxWithConstraints(
         Modifier
@@ -111,16 +108,17 @@ fun PlayerPad(playPanelWidth: Dp, gameData:GameData = LocalGameControl.current
             modifier = Modifier.align(Alignment.BottomEnd),
 
             onClick = {
-                scope.launch {
-//                    count++
-                    repeat(100){
-                        gameData.data = countData(it)
-                        composable.invalidate()
-                        delay(1000)
-                    }
-                }
+//                scope.launch {
+////                    count++
+//                    repeat(100){
+////                        gameData.data = countData(it)
+//                        composable.invalidate()
+//                        delay(1000)
+//                    }
+//                }
+                gamer.startGame()
             }) {
-            Text("Level ${LocalGameControl.current.level}")
+            Text("Level ${LocalGameData.current.level}")
         }
     }
 }
