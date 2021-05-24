@@ -10,6 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -38,21 +41,45 @@ fun Screen(width: Dp) {
             .size(width = width, playPanelHeight)
             .background(color = SCREEN_BACKGROUND)
     ) {
-        Row {
-            CompositionLocalProvider(
-                LocalBrickSize provides BrickSize(
-                    size = getBrickSizeFor(playPanelWidth)
-                )
-            ) {
+        CompositionLocalProvider(
+            LocalBrickSize provides BrickSize(
+                size = getBrickSizeFor(playPanelWidth)
+            )
+        ) {
+            Row {
                 PlayerPad(playPanelWidth)
+                StatusPanel()
             }
         }
     }
 }
 
 @Composable
+fun StatusPanel(gameData: GameData = LocalGameData.current) {
+    Column(Modifier.padding(8.dp)) {
+        Text("分数", style = TextStyle(fontWeight = FontWeight.Bold))
+        Spacer(modifier = Modifier.height(4.dp))
+        GamerNumber(gameData.points)
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text("消除", style = TextStyle(fontWeight = FontWeight.Bold))
+        Spacer(modifier = Modifier.height(4.dp))
+        GamerNumber(gameData.clear)
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text("级别", style = TextStyle(fontWeight = FontWeight.Bold))
+        Spacer(modifier = Modifier.height(4.dp))
+        GamerNumber(gameData.level)
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text("status : ${gameData.gameState}")
+    }
+}
+
+@Composable
 fun PlayerPad(
-    playPanelWidth: Dp, gameData: GameData = LocalGameData.current,
+    playPanelWidth: Dp,
+    gameData: GameData = LocalGameData.current,
     gamer: Gamer = LocalGamer.current
 ) {
     BoxWithConstraints(
