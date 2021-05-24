@@ -123,6 +123,24 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
 
     }
 
+    fun reset() {
+        state = GameState.reset
+        // 执行一段动画，从下到上铺满格子，再从上到下清除格子
+        gameScope.launch {
+            for (i in GAME_PAD_MATRIX_H - 1 downTo 0) {
+                data[i].fill(1)
+                onNewGameState(GameState.reset)
+                delay(50)
+            }
+            for (i in 0 until GAME_PAD_MATRIX_H) {
+                data[i].fill(0)
+                onNewGameState(GameState.reset)
+                delay(50)
+            }
+        }
+        state = GameState.none
+    }
+
 
     private fun getNextBlock(): Block {
         return Block.random().also {
@@ -163,6 +181,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
                 } else {
                     data[y][x]
                 }
+                // 注意处理 mask效果，叠加到data之上得到最终效果
                 if (mask[y][x] == -1) {
                     value = 0
                 } else if (mask[y][x] == 1) {
@@ -199,6 +218,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
             Log.d("wolf", "mixed no clear")
             onNewGameState(GameState.mixing)
             performActionOnPad { i, j ->
+                // 高亮落到底部的砖块
                 mask[i][j] = if (current?.occupy(i, j) == true) {
                     1
                 } else {
@@ -207,13 +227,13 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
                 false
             }
             gameScope.launch {
+                // 高亮的砖块在200毫秒后去掉高亮
                 delay(200)
                 performActionOnPad { i, j ->
                     mask[i][j] = 0
                     false
                 }
             }
-
         }
 
         // current 已经融入data
@@ -221,12 +241,10 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
 
         // 砖块触顶，结束游戏
         if (data[0].contains(1)) {
-            
+            reset()
         } else {
-
             startGame()
         }
-
     }
 
     fun down() {
