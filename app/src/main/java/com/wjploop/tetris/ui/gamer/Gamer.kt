@@ -133,30 +133,37 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     }
 
     fun left() {
-
+        if (current?.left()?.isNotConflict(data) == true) {
+            current = current?.left()
+            onNewGameState(GameState.running)
+        }
     }
 
     fun right() {
-
+        if (current?.right()?.isNotConflict(data) == true) {
+            current = current?.right()
+            onNewGameState(GameState.running)
+        }
     }
 
     fun rotate() {
-
+        if (current?.rotate()?.isNotConflict(data) == true) {
+            current = current?.rotate()
+            onNewGameState(GameState.running)
+        }
     }
 
     fun drop() {
         if (state == GameState.running && current != null) {
-            for (i in 0 until GAME_PAD_MATRIX_H) {
-                val fall = current?.fall(i + 1) ?: return
-                if (!fall.isNotConflict(data)) {
-                    gameScope.launch {
-                        current = fall
-                        onNewGameState(GameState.drop)
-                        delay(100)
-                        mixCurrentInToData()
-                    }
-                    break
-                }
+            var next = current ?: return
+            while (next.fall().isNotConflict(data)) {
+                next = next.fall()
+            }
+            current = next
+            gameScope.launch {
+                delay(100)
+                onNewGameState(GameState.drop)
+                mixCurrentInToData()
             }
         } else if (state in arrayOf(GameState.none, GameState.paused)) {
             startGame()
@@ -173,7 +180,6 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
 
 
     fun reset() {
-        state = GameState.reset
         // 执行一段动画，从下到上铺满格子，再从上到下清除格子
         gameScope.launch {
             for (i in GAME_PAD_MATRIX_H - 1 downTo 0) {
@@ -181,13 +187,16 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
                 onNewGameState(GameState.reset)
                 delay(50)
             }
+            current = null
+            getNextBlock()
             for (i in 0 until GAME_PAD_MATRIX_H) {
                 data[i].fill(0)
                 onNewGameState(GameState.reset)
                 delay(50)
             }
+            onNewGameState(GameState.none)
         }
-        state = GameState.none
+
     }
 
 
@@ -198,16 +207,16 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     }
 
     fun onNewGameState(state: GameState) {
+        this.state = state
         gameScope.launch {
 //            delay(1000)
 //            level++
             Log.d("wolf", "level $level")
 
             Log.d("wolf", formatMatrix(data))
-
             setGameData(
                 GameData(
-                    gameState = this@Gamer.state,
+                    gameState = state,
                     data = computeData(),
                     level = level,
                     0,
@@ -301,10 +310,11 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
 
     private fun autoFall() {
         current = current ?: getNextBlock()
+        fallJob?.cancel()
         fallJob = gameScope.launch {
             while (true) {
-                delay(1000)
                 down()
+                delay(1000)
             }
         }
     }

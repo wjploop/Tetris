@@ -49,10 +49,10 @@ fun DirectionController(gamer: Gamer = LocalGamer.current) {
     Box(
         Modifier.size(direction_button_size * 3),
     ) {
-        GameActionButton(Modifier.align(Alignment.TopCenter), onClick = { gamer.down() })
-        GameActionButton(Modifier.align(Alignment.CenterEnd), onClick = { gamer.left() })
+        GameActionButton(Modifier.align(Alignment.TopCenter), onClick = { gamer.rotate() })
+        GameActionButton(Modifier.align(Alignment.CenterEnd), onClick = { gamer.right() })
         GameActionButton(Modifier.align(Alignment.BottomCenter), onClick = { gamer.rotate() })
-        GameActionButton(Modifier.align(Alignment.CenterStart), onClick = { gamer.right() })
+        GameActionButton(Modifier.align(Alignment.CenterStart), onClick = { gamer.left() })
 
         Box(
             Modifier

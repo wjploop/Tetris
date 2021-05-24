@@ -64,7 +64,12 @@ enum class BlockType(
             intArrayOf(1, 1, 1)
         ),
         startXY = intArrayOf(4, -1),
-        origin = arrayOf()
+        origin = arrayOf(
+            intArrayOf(0, 0),
+            intArrayOf(0, 1),
+            intArrayOf(1, -1),
+            intArrayOf(-1, 0),
+        )
     );
 
     override fun toString(): String {
@@ -87,6 +92,29 @@ data class Block(
     fun fall(step: Int = 1) = copy(topLeft = intArrayOf(left, top + step))
     fun left() = copy(topLeft = intArrayOf(left - 1, top))
     fun right() = copy(topLeft = intArrayOf(left + 1, top))
+    fun rotate(): Block {
+
+        // 顺时针翻转一个矩形
+        // 123
+        // 456
+        // =>
+        // 41
+        // 52
+        // 63
+        val nextShape = Array<IntArray>(shape[0].size) { IntArray(shape.size) }
+        for (i in nextShape.indices) {
+            for (j in nextShape[0].indices) {
+                // 3 = [2,0] = [0,2] == [2-1 - 1][2]
+                nextShape[i][j] = shape[shape.size - 1 - j][i]
+            }
+        }
+        val nextTopLeft = intArrayOf(
+            topLeft[0] + type.origin[rotateIndex][0],
+            topLeft[1] + type.origin[rotateIndex][1]
+        )
+        val nextRotateIndex = if (rotateIndex + 1 >= type.origin.size) 0 else rotateIndex + 1
+        return Block(type, nextShape, nextTopLeft, nextRotateIndex)
+    }
 
     fun isNotConflict(matrix: Array<IntArray>): Boolean {
         // 砖块是否出界
