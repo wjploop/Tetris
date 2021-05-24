@@ -2,10 +2,8 @@ package com.wjploop.tetris.ui.gamer
 
 import android.util.Log
 import androidx.compose.runtime.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -80,12 +78,15 @@ data class GameData(
 }
 
 val LocalGameData = compositionLocalOf<GameData> {
-    error("no find game data")
+    // AS 没法处理好这个
+//    error("no find game data")
+    GameData()
 }
 
 
 val LocalGamer = compositionLocalOf<Gamer> {
-    error("no find gamer")
+//    error("no find gamer")
+    Gamer(MainScope()) {}
 }
 
 // 用于处理游戏状态迁移
@@ -119,9 +120,57 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
         autoFall()
     }
 
-    private fun pause() {
+
+    fun down() {
+        current?.fall()?.let {
+            if (it.isNotConflict(data)) {
+                current = it
+                onNewGameState(GameState.running)
+            } else {
+                mixCurrentInToData()
+            }
+        }
+    }
+
+    fun left() {
 
     }
+
+    fun right() {
+
+    }
+
+    fun rotate() {
+
+    }
+
+    fun drop() {
+        if (state == GameState.running && current != null) {
+            for (i in 0 until GAME_PAD_MATRIX_H) {
+                val fall = current?.fall(i + 1) ?: return
+                if (!fall.isNotConflict(data)) {
+                    gameScope.launch {
+                        current = fall
+                        onNewGameState(GameState.drop)
+                        delay(100)
+                        mixCurrentInToData()
+                    }
+                    break
+                }
+            }
+        } else if (state in arrayOf(GameState.none, GameState.paused)) {
+            startGame()
+        }
+    }
+
+    fun sounds() {
+
+    }
+
+    fun pause() {
+
+    }
+
 
     fun reset() {
         state = GameState.reset
@@ -247,17 +296,6 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
         }
     }
 
-    fun down() {
-        current?.fall()?.let {
-            if (it.isNotConflict(data)) {
-                current = it
-                onNewGameState(GameState.running)
-            } else {
-                mixCurrentInToData()
-            }
-        }
-
-    }
 
     var fallJob: Job? = null
 

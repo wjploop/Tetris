@@ -33,9 +33,6 @@ fun Screen(width: Dp) {
     val playPanelHeight =
         getBrickSizeFor(playPanelWidth).width.dp * GAME_PAD_MATRIX_H + playPadPadding * 2f
 
-
-//    val playPanelHeight = playPanelWidth * 2
-
     BoxWithConstraints(
         Modifier
             .size(width = width, playPanelHeight)
@@ -64,21 +61,6 @@ fun PlayerPad(
             .border(2.dp, Color.Black)
             .padding(playPadPadding)
     ) {
-        fun countData(count: Int): List<List<Int>> =
-            (0..GAME_PAD_MATRIX_H).map { i ->
-                IntArray(GAME_PAD_MATRIX_W) { j ->
-                    if (count > i * GAME_PAD_MATRIX_W + j) {
-                        0
-                    } else {
-                        -1
-                    }
-                }.toMutableList()
-            }.toMutableList()
-
-
-        var count by remember {
-            mutableStateOf(8)
-        }
 
         val data = gameData.data
 
@@ -100,25 +82,6 @@ fun PlayerPad(
                     }
                 }
             }
-        }
-
-        val scope = rememberCoroutineScope()
-        val composable = currentRecomposeScope
-        Button(
-            modifier = Modifier.align(Alignment.BottomEnd),
-
-            onClick = {
-//                scope.launch {
-////                    count++
-//                    repeat(100){
-////                        gameData.data = countData(it)
-//                        composable.invalidate()
-//                        delay(1000)
-//                    }
-//                }
-                gamer.startGame()
-            }) {
-            Text("Level ${LocalGameData.current.level}")
         }
     }
 }
