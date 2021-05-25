@@ -21,6 +21,8 @@ import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickSize
 import com.wjploop.tetris.ui.material.BrickType
 import com.wjploop.tetris.ui.material.LocalBrickSize
+import java.util.*
+import kotlin.concurrent.timerTask
 
 val SCREEN_BACKGROUND = Color(0xff9ead86)
 
@@ -54,6 +56,7 @@ fun Screen(width: Dp) {
     }
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun StatusPanel(gameData: GameData = LocalGameData.current) {
     Column(Modifier.padding(8.dp)) {
@@ -72,7 +75,80 @@ fun StatusPanel(gameData: GameData = LocalGameData.current) {
         GamerNumber(gameData.level)
         Spacer(modifier = Modifier.height(10.dp))
 
+        Text("下一个", style = TextStyle(fontWeight = FontWeight.Bold))
+        Spacer(modifier = Modifier.height(4.dp))
+        NextBlock()
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Text("status : ${gameData.gameState}")
+        Spacer(modifier = Modifier.weight(0.5f))
+
+        GameStatus()
+
+    }
+}
+
+@ExperimentalStdlibApi
+@Composable
+fun GameStatus(gameData: GameData = LocalGameData.current) {
+
+    val timer by remember {
+        mutableStateOf(Timer())
+    }
+    val (hour, setHour) = remember {
+        mutableStateOf(0)
+    }
+
+    val (minute, setMinute) = remember {
+        mutableStateOf(0)
+    }
+
+    var colon by remember {
+        mutableStateOf(false)
+    }
+
+    DisposableEffect(key1 = timer) {
+        timer.schedule(timerTask {
+            val calendar = Calendar.getInstance()
+            setHour(calendar.get(Calendar.HOUR_OF_DAY))
+            setMinute(calendar.get(Calendar.MINUTE))
+            colon = !colon
+        }, 0, 1000)
+        onDispose {
+            timer.cancel()
+        }
+    }
+
+
+    Row {
+        IconSound(enable = !gameData.mute)
+        Spacer(modifier = Modifier.width(4.dp))
+        IconPause(enable = gameData.gameState == GameState.paused)
+        Spacer(modifier = Modifier.weight(weight = 1.0F, fill = true))
+        GamerNumber(number = hour, 2, true)
+        IconColon(enable = colon)
+        GamerNumber(number = minute, 2, true)
+    }
+}
+
+
+@Composable
+fun NextBlock(gameData: GameData = LocalGameData.current) {
+    val data = Array(2) { IntArray(4) }
+    gameData.next?.shape?.forEachIndexed { i, row ->
+        row.forEachIndexed { j, value ->
+            data[i][j] = value
+        }
+    }
+    Column {
+        data.map {
+            Row {
+                it.map {
+                    Brick(if (it == 1) BrickType.normal else BrickType.empty)
+                }
+            }
+        }
     }
 }
 

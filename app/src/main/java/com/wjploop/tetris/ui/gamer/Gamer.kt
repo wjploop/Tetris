@@ -2,6 +2,11 @@ package com.wjploop.tetris.ui.gamer
 
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
+import com.wjploop.tetris.R
+import com.wjploop.tetris.ui.panel.LocalMaterial
+import com.wjploop.tetris.ui.panel.MaterialDataWrapper
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -46,6 +51,7 @@ data class GameData(
     val level: Int = 1,
     val points: Int = 0,
     val clear: Int = 0,
+    val mute: Boolean = false,
 
     val next: Block? = null,
     val onNewGameSate: (GameState) -> Unit = {},
@@ -62,6 +68,7 @@ data class GameData(
         if (points != other.points) return false
         if (clear != other.clear) return false
         if (next != other.next) return false
+        if (mute != other.mute) return false
 
         return true
     }
@@ -101,6 +108,11 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     }
 
     var level = 0
+
+    var points = 0
+
+    var clear: Int = 0
+
 
     var state = GameState.none
 
@@ -201,8 +213,9 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
 
 
     private fun getNextBlock(): Block {
-        return Block.random().also {
-            next = it
+        level++
+        return next.also {
+            next = Block.random()
         }
     }
 
@@ -219,8 +232,8 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
                     gameState = state,
                     data = computeData(),
                     level = level,
-                    0,
-                    0,
+                    points = points,
+                    clear = clear,
                     next = next,
                     onNewGameSate = {
                         onNewGameState(it)
@@ -341,9 +354,17 @@ fun Game(
         Gamer(gameScope = gameScope, setGameData = setGameData)
     }
 
+    val bitmap = ImageBitmap.imageResource(id = R.drawable.material)
+
+    val materialDataWrapper = remember(bitmap) {
+        MaterialDataWrapper(bitmap = bitmap)
+    }
+
+
     CompositionLocalProvider(
         LocalGameData provides gameData,
-        LocalGamer provides gamer
+        LocalGamer provides gamer,
+        LocalMaterial provides materialDataWrapper
     ) {
         child()
     }
