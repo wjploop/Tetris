@@ -122,7 +122,7 @@ fun GameStatus(gameData: GameData = LocalGameData.current) {
 
 
     Row {
-        IconSound(enable = !gameData.mute)
+        IconSound(enable = gameData.mute)
         Spacer(modifier = Modifier.width(4.dp))
         IconPause(enable = gameData.gameState == GameState.paused)
         Spacer(modifier = Modifier.weight(weight = 1.0F, fill = true))

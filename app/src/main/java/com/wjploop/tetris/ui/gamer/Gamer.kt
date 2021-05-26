@@ -6,11 +6,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import com.wjploop.tetris.R
+import com.wjploop.tetris.ext.logx
 import com.wjploop.tetris.ui.material.LocalSound
 import com.wjploop.tetris.ui.material.Sound
 import com.wjploop.tetris.ui.panel.LocalMaterial
 import com.wjploop.tetris.ui.panel.MaterialDataWrapper
 import kotlinx.coroutines.*
+import java.util.*
+import kotlin.math.sign
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -118,7 +121,6 @@ class Gamer(
 
     var clear: Int = 0
 
-
     var state = GameState.none
 
     var current: Block? = null
@@ -135,19 +137,26 @@ class Gamer(
     }
 
     fun startGame() {
-        autoFall()
+        if (state == GameState.running && fallJob?.isActive == false) {
+            return
+        }
+        onNewGameState(GameState.running)
+        autoFall(true)
     }
 
 
     fun down() {
-        current?.fall()?.let {
-            if (it.isNotConflict(data)) {
-                current = it
-                onNewGameState(GameState.running)
-            } else {
-                mixCurrentInToData()
+        gameScope.launch {
+            current?.fall()?.let {
+                if (it.isNotConflict(data)) {
+                    current = it
+                    onNewGameState(GameState.running)
+                } else {
+                    mixCurrentInToData()
+                }
             }
         }
+
     }
 
     fun left() {
@@ -193,17 +202,29 @@ class Gamer(
     }
 
     fun sounds() {
-
+        sound.mute = !sound.mute
+        onNewGameState()
     }
 
     fun pause() {
-
+        onNewGameState(GameState.paused)
     }
 
 
     fun reset() {
-        // 执行一段动画，从下到上铺满格子，再从上到下清除格子
+
         gameScope.launch {
+            if (state == GameState.none) {
+                startGame()
+                return@launch
+            }
+            if (state == GameState.reset) {
+                return@launch
+            }
+            sound.start()
+            onNewGameState(GameState.reset)
+
+            // 执行一段动画，从下到上铺满格子，再从上到下清除格子
             for (i in GAME_PAD_MATRIX_H - 1 downTo 0) {
                 data[i].fill(1)
                 onNewGameState(GameState.reset)
@@ -229,7 +250,7 @@ class Gamer(
         }
     }
 
-    fun onNewGameState(state: GameState) {
+    fun onNewGameState(state: GameState = this.state) {
         this.state = state
         gameScope.launch {
 //            delay(1000)
@@ -237,6 +258,7 @@ class Gamer(
 //            Log.d("wolf", "level $level")
 
 //            Log.d("wolf", formatMatrix(data))
+
             setGameData(
                 GameData(
                     gameState = state,
@@ -245,6 +267,7 @@ class Gamer(
                     points = points,
                     clear = clear,
                     next = next,
+                    mute = sound.mute,
                     onNewGameSate = {
                         onNewGameState(it)
                     })
@@ -276,12 +299,15 @@ class Gamer(
     }
 
 
-    private fun mixCurrentInToData() {
-        fallJob?.cancel()
+    private suspend fun mixCurrentInToData() {
+        autoFall(false)
 
         // 更新data，将current混入原来的data
         performActionOnPad { i, j ->
             data[i][j] = if (current?.occupy(i, j) == true) 1 else data[i][j]
+            if (i == 0 && data[0].contains(1)) {
+                logx("no, error in update data")
+            }
             false
         }
 
@@ -295,6 +321,33 @@ class Gamer(
 
         if (clearLines.isNotEmpty()) {
             Log.d("wolf", "mixed and clear lines $clearLines")
+            sound.clear()
+            clearLines.forEach {
+                mask[it].fill(1)
+                onNewGameState()
+                delay(100)
+            }
+            clearLines.forEach {
+                mask[it].fill(0)
+            }
+
+            // 移除消除的行
+            val newData =
+                data.toMutableList().filterIndexed { index, _ -> !clearLines.contains(index) }
+                    .toMutableList()
+                    .apply {
+                        repeat(clearLines.size) {
+                            add(0, IntArray(GAME_PAD_MATRIX_W))
+                        }
+                    }
+                    .toList()
+                    .toTypedArray()
+            newData.copyInto(data)
+
+            clear += clearLines.size
+            points += clearLines.size * level * 5
+
+
         } else {
             Log.d("wolf", "mixed no clear")
             onNewGameState(GameState.mixing)
@@ -308,14 +361,13 @@ class Gamer(
                 }
                 false
             }
-            gameScope.launch {
-                // 高亮的砖块在200毫秒后去掉高亮
-                delay(200)
-                performActionOnPad { i, j ->
-                    mask[i][j] = 0
-                    false
-                }
+            // 高亮的砖块在200毫秒后去掉高亮
+            delay(200)
+            performActionOnPad { i, j ->
+                mask[i][j] = 0
+                false
             }
+
         }
 
         // current 已经融入data
@@ -323,6 +375,7 @@ class Gamer(
 
         // 砖块触顶，结束游戏
         if (data[0].contains(1)) {
+            logx("reset and current matrix ${formatMatrix(data)}")
             reset()
         } else {
             startGame()
@@ -332,15 +385,21 @@ class Gamer(
 
     var fallJob: Job? = null
 
-    private fun autoFall() {
-        current = current ?: getNextBlock()
-        fallJob?.cancel()
-        fallJob = gameScope.launch {
-            while (true) {
-                down()
-                delay(1000)
+    private fun autoFall(enable: Boolean) {
+        if (!enable && fallJob != null) {
+            fallJob?.cancel()
+            fallJob = null
+        } else if (enable) {
+            fallJob?.cancel()
+            current = current ?: getNextBlock()
+            fallJob = gameScope.launch {
+                while (true) {
+                    down()
+                    delay(1000)
+                }
             }
         }
+
     }
 }
 

@@ -18,6 +18,8 @@ val LocalSound = compositionLocalOf {
 
 class Sound(context: Context) {
 
+    var mute = false
+
     private val sound: SoundPool = SoundPool.Builder()
         .setAudioAttributes(
             AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
@@ -43,6 +45,9 @@ class Sound(context: Context) {
     }.toMap()
 
     private fun play(resId: Int) {
+        if (mute) {
+            return
+        }
         sound.play(
             soundIds[resId] ?: error("the sound resId $resId hadn't loaded"),
             1f,

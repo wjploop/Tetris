@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wjploop.tetris.ui.gamer.Gamer
 import com.wjploop.tetris.ui.gamer.LocalGamer
+import com.wjploop.tetris.ui.material.LocalSound
+import com.wjploop.tetris.ui.material.Sound
 
 private val direction_button_size = 48.dp
 private val system_button_size = 28.dp
@@ -110,7 +112,7 @@ fun LeftController(gamer: Gamer = LocalGamer.current) {
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onClick = {
-                    gamer.pause()
+                    gamer.pauseOrResume()
                 })
                 Spacer(Modifier.height(spacer_height))
                 Text("暂停/恢复", fontSize = 12.sp, color = Color.Black)
