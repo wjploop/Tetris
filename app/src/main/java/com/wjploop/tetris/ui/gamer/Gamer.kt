@@ -1,14 +1,16 @@
 package com.wjploop.tetris.ui.gamer
 
+import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import com.wjploop.tetris.R
+import com.wjploop.tetris.ui.material.LocalSound
+import com.wjploop.tetris.ui.material.Sound
 import com.wjploop.tetris.ui.panel.LocalMaterial
 import com.wjploop.tetris.ui.panel.MaterialDataWrapper
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -93,12 +95,15 @@ val LocalGameData = compositionLocalOf<GameData> {
 
 val LocalGamer = compositionLocalOf<Gamer> {
 //    error("no find gamer")
-    Gamer(MainScope()) {}
+    Gamer(sound = Sound(ContextWrapper(null)), MainScope()) {}
 }
 
 // 用于处理游戏状态迁移
 // 接收来孩子节点的Event，更新后，更新时返回一个新的GameData
-class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) {
+class Gamer(
+    val sound: Sound,
+    val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit,
+) {
 
     private val data: Array<IntArray> = Array(GAME_PAD_MATRIX_H) {
         IntArray(GAME_PAD_MATRIX_W)
@@ -119,6 +124,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     var current: Block? = null
 
     var next = Block.random()
+
 
     fun pauseOrResume() {
         if (state == GameState.running) {
@@ -147,6 +153,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     fun left() {
         if (current?.left()?.isNotConflict(data) == true) {
             current = current?.left()
+            sound.move()
             onNewGameState(GameState.running)
         }
     }
@@ -154,6 +161,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     fun right() {
         if (current?.right()?.isNotConflict(data) == true) {
             current = current?.right()
+            sound.move()
             onNewGameState(GameState.running)
         }
     }
@@ -161,6 +169,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
     fun rotate() {
         if (current?.rotate()?.isNotConflict(data) == true) {
             current = current?.rotate()
+            sound.rotate()
             onNewGameState(GameState.running)
         }
     }
@@ -172,6 +181,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
                 next = next.fall()
             }
             current = next
+
             gameScope.launch {
                 delay(100)
                 onNewGameState(GameState.drop)
@@ -224,9 +234,9 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
         gameScope.launch {
 //            delay(1000)
 //            level++
-            Log.d("wolf", "level $level")
+//            Log.d("wolf", "level $level")
 
-            Log.d("wolf", formatMatrix(data))
+//            Log.d("wolf", formatMatrix(data))
             setGameData(
                 GameData(
                     gameState = state,
@@ -288,6 +298,7 @@ class Gamer(val gameScope: CoroutineScope, val setGameData: (GameData) -> Unit) 
         } else {
             Log.d("wolf", "mixed no clear")
             onNewGameState(GameState.mixing)
+            sound.drop()
             performActionOnPad { i, j ->
                 // 高亮落到底部的砖块
                 mask[i][j] = if (current?.occupy(i, j) == true) {
@@ -348,10 +359,12 @@ fun Game(
             })
         )
     }
+
+    val sound = LocalSound.current
     val gameScope = rememberCoroutineScope()
 
     val gamer = remember {
-        Gamer(gameScope = gameScope, setGameData = setGameData)
+        Gamer(sound = sound, gameScope = gameScope, setGameData = setGameData)
     }
 
     val bitmap = ImageBitmap.imageResource(id = R.drawable.material)
@@ -360,11 +373,10 @@ fun Game(
         MaterialDataWrapper(bitmap = bitmap)
     }
 
-
     CompositionLocalProvider(
         LocalGameData provides gameData,
         LocalGamer provides gamer,
-        LocalMaterial provides materialDataWrapper
+        LocalMaterial provides materialDataWrapper,
     ) {
         child()
     }

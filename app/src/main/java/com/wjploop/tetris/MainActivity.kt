@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.wjploop.tetris.ui.gamer.Game
 import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickType
+import com.wjploop.tetris.ui.material.SoundWidget
 import com.wjploop.tetris.ui.panel.HomePage
 import com.wjploop.tetris.ui.theme.TetrisTheme
 
@@ -25,8 +26,10 @@ class MainActivity : ComponentActivity() {
             TetrisTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Game {
-                        HomePage()
+                    SoundWidget {
+                        Game {
+                            HomePage()
+                        }
                     }
 
                 }
