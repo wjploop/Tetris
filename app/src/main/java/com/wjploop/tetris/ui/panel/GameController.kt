@@ -37,9 +37,11 @@ fun GameController() {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
                 LeftController()
             }
-            Box(modifier = Modifier
-                .weight(1f)
-                .fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize(), contentAlignment = Alignment.Center
+            ) {
                 DirectionController()
             }
         }
@@ -53,7 +55,7 @@ fun DirectionController(gamer: Gamer = LocalGamer.current) {
     ) {
         GameActionButton(Modifier.align(Alignment.TopCenter), onClick = { gamer.rotate() })
         GameActionButton(Modifier.align(Alignment.CenterEnd), onClick = { gamer.right() })
-        GameActionButton(Modifier.align(Alignment.BottomCenter), onClick = { gamer.rotate() })
+        GameActionButton(Modifier.align(Alignment.BottomCenter), onClick = { gamer.down(true) })
         GameActionButton(Modifier.align(Alignment.CenterStart), onClick = { gamer.left() })
 
         Box(

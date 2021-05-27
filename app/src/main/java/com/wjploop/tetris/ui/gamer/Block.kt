@@ -89,7 +89,7 @@ data class Block(
     val left = topLeft[0]
     val top = topLeft[1]
 
-    fun fall(step: Int = 1) = copy(topLeft = intArrayOf(left, top + step))
+    fun down(step: Int = 1) = copy(topLeft = intArrayOf(left, top + step))
     fun left() = copy(topLeft = intArrayOf(left - 1, top))
     fun right() = copy(topLeft = intArrayOf(left + 1, top))
     fun rotate(): Block {

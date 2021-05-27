@@ -13,7 +13,6 @@ import com.wjploop.tetris.ui.panel.LocalMaterial
 import com.wjploop.tetris.ui.panel.MaterialDataWrapper
 import kotlinx.coroutines.*
 import java.util.*
-import kotlin.math.sign
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -123,6 +122,7 @@ class Gamer(
 
     var state = GameState.none
 
+    // todo 当前使用 current 是否为空隐式表达了一个游戏状态，换个方式显式表达出来更好
     var current: Block? = null
 
     var next = Block.random()
@@ -136,7 +136,7 @@ class Gamer(
         }
     }
 
-    fun startGame() {
+    private fun startGame() {
         if (state == GameState.running && fallJob?.isActive == false) {
             return
         }
@@ -145,58 +145,88 @@ class Gamer(
     }
 
 
-    fun down() {
-        gameScope.launch {
-            current?.fall()?.let {
-                if (it.isNotConflict(data)) {
-                    current = it
-                    onNewGameState(GameState.running)
+    // 检验当前是游戏运行状态
+    private fun performGameAction(action: (current: Block) -> Unit) {
+        val actionName = action.toString()
+        if (state != GameState.running) {
+            logx("can't do action $actionName because current state is not ${GameState.running} but $state ")
+            return
+        }
+        current?.let {
+            action(it)
+        } ?: logx("can't do action $actionName because current is null")
+    }
+
+
+    // todo 几个游戏动作公共部分提取出来，action on current output next, check next and do refresh or else
+    // 区分 自动下落 和 用户手动下落， 后者播放音效
+    fun down(enableSound: Boolean = false) {
+        performGameAction {
+            gameScope.launch {
+                val next = it.down()
+                if (next.isNotConflict(data)) {
+                    current = next
+                    onNewGameState()
+                    if (enableSound) {
+                        sound.move()
+                    }
                 } else {
                     mixCurrentInToData()
                 }
             }
         }
-
     }
 
     fun left() {
-        if (current?.left()?.isNotConflict(data) == true) {
-            current = current?.left()
-            sound.move()
-            onNewGameState(GameState.running)
+        performGameAction {
+            val next = it.left()
+            if (next.isNotConflict(data)) {
+                current = next
+                sound.move()
+                onNewGameState()
+            }
         }
     }
 
     fun right() {
-        if (current?.right()?.isNotConflict(data) == true) {
-            current = current?.right()
-            sound.move()
-            onNewGameState(GameState.running)
+        performGameAction {
+            val next = it.right()
+            if (next.isNotConflict(data)) {
+                current = next
+                sound.move()
+                onNewGameState()
+            }
         }
     }
 
     fun rotate() {
-        if (current?.rotate()?.isNotConflict(data) == true) {
-            current = current?.rotate()
-            sound.rotate()
-            onNewGameState(GameState.running)
+        performGameAction {
+            val next = it.rotate()
+            if (next.isNotConflict(data)) {
+                current = next
+                sound.rotate()
+                onNewGameState()
+            }
         }
     }
 
     fun drop() {
-        if (state == GameState.running && current != null) {
-            var next = current ?: return
-            while (next.fall().isNotConflict(data)) {
-                next = next.fall()
+        if (state == GameState.running) {
+            performGameAction {
+                var cur = it
+                var next = cur.down()
+                while (next.isNotConflict(data)) {
+                    cur = next
+                    next = next.down()
+                }
+                current = cur
+                gameScope.launch {
+                    delay(100)
+                    onNewGameState(GameState.drop)
+                    mixCurrentInToData()
+                }
             }
-            current = next
-
-            gameScope.launch {
-                delay(100)
-                onNewGameState(GameState.drop)
-                mixCurrentInToData()
-            }
-        } else if (state in arrayOf(GameState.none, GameState.paused)) {
+        } else if (state in arrayOf(GameState.none)) {
             startGame()
         }
     }
@@ -394,7 +424,7 @@ class Gamer(
             current = current ?: getNextBlock()
             fallJob = gameScope.launch {
                 while (true) {
-                    down()
+                    down(false)
                     delay(1000)
                 }
             }
