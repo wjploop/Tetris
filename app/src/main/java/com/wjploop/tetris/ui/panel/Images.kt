@@ -2,18 +2,18 @@ package com.wjploop.tetris.ui.panel
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import com.wjploop.tetris.R
+import com.wjploop.tetris.ext.logx
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 val digital_raw_size = IntSize(14, 24)
 
@@ -110,6 +110,55 @@ fun IconPause(enable: Boolean, size: IntSize = IntSize(18, 16) * ratio) {
         srcSize = IntSize(20, 18)
     )
 }
+
+@Composable
+fun IconDragon(animate: Boolean) {
+
+
+    var _frame by remember {
+        mutableStateOf(0)
+    }
+
+    val scope = rememberCoroutineScope()
+
+
+    LaunchedEffect(key1 = animate, block = {
+        scope.launch {
+            repeat(Int.MAX_VALUE) {
+                delay(200)
+                if (_frame > 30) {
+                    _frame = 0
+                }
+                _frame++
+            }
+        }
+    })
+
+    fun getOffset(frame: Int): IntOffset {
+        var index: Int = if (frame < 10) {
+            if (frame % 2 == 2) 0 else 1
+        } else {
+            if (frame % 2 == 0) 2 else 3
+        }
+        val dx = index * 100
+        return IntOffset(dx, 100)
+    }
+
+
+
+    Material(
+        size = IntSize(80, 86) * ratio,
+        srcOffset = getOffset(_frame),
+        srcSize = IntSize(80, 86)
+    )
+
+}
+
+@Composable
+fun DragonFrame(frame: Int) {
+
+}
+
 
 @Preview
 @Composable
