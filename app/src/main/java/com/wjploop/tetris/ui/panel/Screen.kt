@@ -105,7 +105,6 @@ fun StatusPanel(gameData: GameData = LocalGameData.current) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text("status : ${gameData.gameState}")
         Spacer(modifier = Modifier.weight(0.5f))
 
         GameStatus()

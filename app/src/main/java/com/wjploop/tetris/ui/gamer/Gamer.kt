@@ -1,11 +1,14 @@
 package com.wjploop.tetris.ui.gamer
 
+import android.annotation.SuppressLint
 import android.content.ContextWrapper
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
-import com.wjploop.tetris.R
 import com.wjploop.tetris.ext.logx
 import com.wjploop.tetris.ui.material.LocalMaterial
 import com.wjploop.tetris.ui.material.LocalSound
@@ -13,6 +16,7 @@ import com.wjploop.tetris.ui.material.MaterialDataWrapper
 import com.wjploop.tetris.ui.material.Sound
 import kotlinx.coroutines.*
 import java.util.*
+import com.wjploop.tetris.R
 
 ///the height of game pad
 const val GAME_PAD_MATRIX_H = 20
@@ -449,6 +453,7 @@ private fun formatMatrix(matrix: Array<IntArray>): String {
     return "matrix:\n" + matrix.contentDeepToString().drop(1).dropLast(1).replace("], ", "]\n")
 }
 
+@SuppressLint("ResourceType")
 @Composable
 fun Game(
     child: @Composable () -> Unit
@@ -468,10 +473,23 @@ fun Game(
         Gamer(sound = sound, gameScope = gameScope, setGameData = setGameData)
     }
 
-    val bitmap = ImageBitmap.imageResource(id = R.drawable.material)
+    val context = LocalContext.current
+    // worked, but android recommend put in the raw directory
+//    val bitmap = BitmapFactory.decodeStream(context.assets.open("raw/material.png"),)
+    // not worked, not expected bitmap
+    // 为什么呢？
+//    val bitmap = BitmapFactory.decodeResource(context.resources, R.raw.material, null)
 
-    val materialDataWrapper = remember(bitmap) {
-        MaterialDataWrapper(bitmap = bitmap)
+    // 注意放在drawable目录的图片，aapt去掉一些不必要的信息
+
+    val bitmap = BitmapFactory.decodeStream(context.resources.openRawResource(R.raw.material))
+
+
+//    val imageBitmap = ImageBitmap.imageResource(id = R.raw.material)
+    val imageBitmap = bitmap.asImageBitmap()
+
+    val materialDataWrapper = remember(imageBitmap) {
+        MaterialDataWrapper(bitmap = imageBitmap)
     }
 
     CompositionLocalProvider(

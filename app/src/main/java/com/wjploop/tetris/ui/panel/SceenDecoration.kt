@@ -18,7 +18,7 @@ fun ScreenDecoration(child: @Composable () -> Unit) {
 
     BoxWithConstraints(
         Modifier
-            // todo 预期的边框是，左上是一种颜色，右下是另一个颜色，以达到一种内嵌屏幕的视觉效果 在compose要自己实现
+            // todo 预期的边框是，左上是一种颜色，右下是另一个颜色，以达到一种内嵌屏幕的视觉效果
             .border(width = SCREEN_BORDER_WIDTH.dp, color = Color(0xFFfae36c))
             .padding(3.dp)
             .background(SCREEN_BACKGROUND)
