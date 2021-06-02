@@ -29,11 +29,14 @@ fun HomePage() {
         }) {
             Text("...")
         }
-        Screen(width = screenW.dp)
+        ScreenDecoration {
+            Screen(width = screenW.dp)
+        }
         GameController()
 
     }
 }
+
 
 @Preview
 @Composable

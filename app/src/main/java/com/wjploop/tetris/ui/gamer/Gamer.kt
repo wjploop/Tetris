@@ -7,10 +7,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import com.wjploop.tetris.R
 import com.wjploop.tetris.ext.logx
+import com.wjploop.tetris.ui.material.LocalMaterial
 import com.wjploop.tetris.ui.material.LocalSound
+import com.wjploop.tetris.ui.material.MaterialDataWrapper
 import com.wjploop.tetris.ui.material.Sound
-import com.wjploop.tetris.ui.panel.LocalMaterial
-import com.wjploop.tetris.ui.panel.MaterialDataWrapper
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -221,8 +221,9 @@ class Gamer(
                 }
                 current = cur
                 gameScope.launch {
-                    delay(100)
                     onNewGameState(GameState.drop)
+                    // 缓一会，依赖这个drop状态执行动画
+                    delay(200)
                     mixCurrentInToData()
                 }
             }

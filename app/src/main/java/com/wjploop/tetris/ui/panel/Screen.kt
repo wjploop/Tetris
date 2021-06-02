@@ -16,10 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.wjploop.tetris.ui.gamer.*
-import com.wjploop.tetris.ui.material.Brick
-import com.wjploop.tetris.ui.material.BrickSize
-import com.wjploop.tetris.ui.material.BrickType
-import com.wjploop.tetris.ui.material.LocalBrickSize
+import com.wjploop.tetris.ui.material.*
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -36,20 +33,21 @@ fun Screen(width: Dp) {
     val playPanelWidth = width * 0.6f
     val playPanelHeight =
         getBrickSizeFor(playPanelWidth).width.dp * GAME_PAD_MATRIX_H + playPadPadding * 2f
-
-    BoxWithConstraints(
-        Modifier
-            .size(width = width, playPanelHeight)
-            .background(color = SCREEN_BACKGROUND)
-    ) {
-        CompositionLocalProvider(
-            LocalBrickSize provides BrickSize(
-                size = getBrickSizeFor(playPanelWidth)
-            )
+    Shake(shake = LocalGameData.current.gameState == GameState.drop) {
+        BoxWithConstraints(
+            Modifier
+                .size(width = width, playPanelHeight)
+                .background(color = SCREEN_BACKGROUND)
         ) {
-            Row {
-                PlayerPanel(playPanelWidth)
-                StatusPanel()
+            CompositionLocalProvider(
+                LocalBrickSize provides BrickSize(
+                    size = getBrickSizeFor(playPanelWidth)
+                )
+            ) {
+                Row {
+                    PlayerPanel(playPanelWidth)
+                    StatusPanel()
+                }
             }
         }
     }

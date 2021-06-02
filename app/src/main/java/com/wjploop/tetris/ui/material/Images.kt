@@ -1,8 +1,7 @@
-package com.wjploop.tetris.ui.panel
+package com.wjploop.tetris.ui.material
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -11,7 +10,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import com.wjploop.tetris.ext.logx
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

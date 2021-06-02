@@ -1,4 +1,4 @@
-package com.wjploop.tetris.ui.panel
+package com.wjploop.tetris.ui.material
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.ImageBitmap
