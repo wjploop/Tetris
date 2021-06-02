@@ -153,7 +153,7 @@ class Gamer(
 
     // 检验当前是游戏运行状态
     private fun performGameAction(action: (current: Block) -> Unit) {
-        val actionName = action.toString()
+        val actionName = action.javaClass.name.split("$").getOrNull(1)
         if (_state != GameState.running) {
             logx("can't do action $actionName because current state is not ${GameState.running} but $_state ")
             return
@@ -164,7 +164,7 @@ class Gamer(
     }
 
 
-    // todo 几个游戏动作公共部分提取出来，action on current output next, check next and do refresh or else
+    // todo 几个游戏动作公共部分提取出来
     // 区分 自动下落 和 用户手动下落， 后者播放音效
     fun down(enableSound: Boolean = false) {
         performGameAction {
@@ -184,8 +184,10 @@ class Gamer(
     }
 
     fun left() {
-        if (_state == GameState.none && _level > GAME_LEVEL_MIN) {
-            _level--
+        if (_state == GameState.none) {
+            if (_level > GAME_LEVEL_MIN) {
+                _level--
+            }
         } else {
             performGameAction {
                 val next = it.left()
@@ -199,8 +201,10 @@ class Gamer(
     }
 
     fun right() {
-        if (_state == GameState.none && _level < GAME_LEVEL_MAX) {
-            _level++
+        if (_state == GameState.none) {
+            if (_level < GAME_LEVEL_MAX) {
+                _level++
+            }
         } else {
             performGameAction {
                 val next = it.right()

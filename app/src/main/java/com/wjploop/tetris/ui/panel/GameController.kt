@@ -53,6 +53,8 @@ fun DirectionController(gamer: Gamer = LocalGamer.current) {
     Box(
         Modifier.size(direction_button_size * 3),
     ) {
+        // todo 支持长按发送命令
+        // todo 按钮实现拟物效果
         GameActionButton(Modifier.align(Alignment.TopCenter), onClick = { gamer.rotate() })
         GameActionButton(Modifier.align(Alignment.CenterEnd), onClick = { gamer.right() })
         GameActionButton(Modifier.align(Alignment.BottomCenter), onClick = { gamer.down(true) })

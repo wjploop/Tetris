@@ -43,13 +43,6 @@ fun Material(
     srcSize: IntSize,
     materialDataWrapper: MaterialDataWrapper = LocalMaterial.current
 ) {
-    //  todo 每个数字都加载一次资源不太好，上升该图片公用
-//    val context = LocalContext.current
-//    val bitmap = remember {
-//        BitmapFactory.decodeStream(context.assets.open("material.png")).asImageBitmap()
-//    }
-//    val bitmap = ImageBitmap.imageResource(id = R.drawable.material)
-
     val bitmap = materialDataWrapper.bitmap
     // 注意过程中可能修改srcOffset要重新composition
     val bitmapPainter = remember(srcOffset, size) {
