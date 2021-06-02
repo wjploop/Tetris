@@ -20,6 +20,13 @@ const val GAME_PAD_MATRIX_H = 20
 ///the width of game pad
 const val GAME_PAD_MATRIX_W = 10
 
+const val GAME_LEVEL_MIN = 1
+const val GAME_LEVEL_MAX = 6
+
+val SPEED = intArrayOf(
+    800, 650, 500, 370, 250, 160
+)
+
 enum class GameState {
     ///随时可以开启一把惊险而又刺激的俄罗斯方块
     none,
@@ -58,7 +65,6 @@ data class GameData(
     val mute: Boolean = false,
 
     val next: Block? = null,
-    val onNewGameSate: (GameState) -> Unit = {},
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -114,30 +120,30 @@ class Gamer(
         IntArray(GAME_PAD_MATRIX_W)
     }
 
-    var level = 0
+    private var _level = GAME_LEVEL_MIN
 
-    var points = 0
+    private var _points = 0
 
-    var clear: Int = 0
+    private var _cleared = 0
 
-    var state = GameState.none
+    private var _state = GameState.none
 
     // todo 当前使用 current 是否为空隐式表达了一个游戏状态，换个方式显式表达出来更好
-    var current: Block? = null
+    private var _current: Block? = null
 
-    var next = Block.random()
+    private var _next = Block.random()
 
 
     fun pauseOrResume() {
-        if (state == GameState.running) {
+        if (_state == GameState.running) {
             pause()
-        } else if (state in arrayOf(GameState.none, GameState.paused)) {
+        } else if (_state in arrayOf(GameState.none, GameState.paused)) {
             startGame()
         }
     }
 
     private fun startGame() {
-        if (state == GameState.running && fallJob?.isActive == false) {
+        if (_state == GameState.running && fallJob?.isActive == false) {
             return
         }
         onNewGameState(GameState.running)
@@ -148,11 +154,11 @@ class Gamer(
     // 检验当前是游戏运行状态
     private fun performGameAction(action: (current: Block) -> Unit) {
         val actionName = action.toString()
-        if (state != GameState.running) {
-            logx("can't do action $actionName because current state is not ${GameState.running} but $state ")
+        if (_state != GameState.running) {
+            logx("can't do action $actionName because current state is not ${GameState.running} but $_state ")
             return
         }
-        current?.let {
+        _current?.let {
             action(it)
         } ?: logx("can't do action $actionName because current is null")
     }
@@ -165,7 +171,7 @@ class Gamer(
             gameScope.launch {
                 val next = it.down()
                 if (next.isNotConflict(data)) {
-                    current = next
+                    _current = next
                     onNewGameState()
                     if (enableSound) {
                         sound.move()
@@ -178,32 +184,40 @@ class Gamer(
     }
 
     fun left() {
-        performGameAction {
-            val next = it.left()
-            if (next.isNotConflict(data)) {
-                current = next
-                sound.move()
-                onNewGameState()
+        if (_state == GameState.none && _level > GAME_LEVEL_MIN) {
+            _level--
+        } else {
+            performGameAction {
+                val next = it.left()
+                if (next.isNotConflict(data)) {
+                    _current = next
+                    sound.move()
+                }
             }
         }
+        onNewGameState()
     }
 
     fun right() {
-        performGameAction {
-            val next = it.right()
-            if (next.isNotConflict(data)) {
-                current = next
-                sound.move()
-                onNewGameState()
+        if (_state == GameState.none && _level < GAME_LEVEL_MAX) {
+            _level++
+        } else {
+            performGameAction {
+                val next = it.right()
+                if (next.isNotConflict(data)) {
+                    _current = next
+                    sound.move()
+                }
             }
         }
+        onNewGameState()
     }
 
     fun rotate() {
         performGameAction {
             val next = it.rotate()
             if (next.isNotConflict(data)) {
-                current = next
+                _current = next
                 sound.rotate()
                 onNewGameState()
             }
@@ -211,7 +225,7 @@ class Gamer(
     }
 
     fun drop() {
-        if (state == GameState.running) {
+        if (_state == GameState.running) {
             performGameAction {
                 var cur = it
                 var next = cur.down()
@@ -219,7 +233,7 @@ class Gamer(
                     cur = next
                     next = next.down()
                 }
-                current = cur
+                _current = cur
                 gameScope.launch {
                     onNewGameState(GameState.drop)
                     // 缓一会，依赖这个drop状态执行动画
@@ -227,7 +241,7 @@ class Gamer(
                     mixCurrentInToData()
                 }
             }
-        } else if (state in arrayOf(GameState.none)) {
+        } else if (_state in arrayOf(GameState.none)) {
             startGame()
         }
     }
@@ -245,11 +259,11 @@ class Gamer(
     fun reset() {
 
         gameScope.launch {
-            if (state == GameState.none) {
+            if (_state == GameState.none) {
                 startGame()
                 return@launch
             }
-            if (state == GameState.reset) {
+            if (_state == GameState.reset) {
                 return@launch
             }
             sound.start()
@@ -261,7 +275,7 @@ class Gamer(
                 onNewGameState(GameState.reset)
                 delay(50)
             }
-            current = null
+            _current = null
             getNextBlock()
             for (i in 0 until GAME_PAD_MATRIX_H) {
                 data[i].fill(0)
@@ -275,33 +289,24 @@ class Gamer(
 
 
     private fun getNextBlock(): Block {
-        level++
-        return next.also {
-            next = Block.random()
+        return _next.also {
+            _next = Block.random()
         }
     }
 
-    fun onNewGameState(state: GameState = this.state) {
-        this.state = state
+    fun onNewGameState(state: GameState = this._state) {
+        this._state = state
         gameScope.launch {
-//            delay(1000)
-//            level++
-//            Log.d("wolf", "level $level")
-
-//            Log.d("wolf", formatMatrix(data))
-
             setGameData(
                 GameData(
                     gameState = state,
                     data = computeData(),
-                    level = level,
-                    points = points,
-                    clear = clear,
-                    next = next,
+                    level = _level,
+                    points = _points,
+                    clear = _cleared,
+                    next = _next,
                     mute = sound.mute,
-                    onNewGameSate = {
-                        onNewGameState(it)
-                    })
+                )
             )
         }
     }
@@ -311,7 +316,7 @@ class Gamer(
         val newData = Array(GAME_PAD_MATRIX_H) { y ->
             val row = IntArray(GAME_PAD_MATRIX_W)
             for (x in 0 until GAME_PAD_MATRIX_W) {
-                var value = if (current?.occupy(y, x) == true) {
+                var value = if (_current?.occupy(y, x) == true) {
                     1
                 } else {
                     data[y][x]
@@ -335,7 +340,7 @@ class Gamer(
 
         // 更新data，将current混入原来的data
         performActionOnPad { i, j ->
-            data[i][j] = if (current?.occupy(i, j) == true) 1 else data[i][j]
+            data[i][j] = if (_current?.occupy(i, j) == true) 1 else data[i][j]
             if (i == 0 && data[0].contains(1)) {
                 logx("no, error in update data")
             }
@@ -375,9 +380,11 @@ class Gamer(
                     .toTypedArray()
             newData.copyInto(data)
 
-            clear += clearLines.size
-            points += clearLines.size * level * 5
+            _cleared += clearLines.size
+            _points += clearLines.size * _level * 5
 
+            // todo 消除50行上升一个等级，这算法似乎不够好，
+            _level = (_cleared / 50).coerceIn(_level, GAME_LEVEL_MAX)
 
         } else {
             Log.d("wolf", "mixed no clear")
@@ -385,7 +392,7 @@ class Gamer(
             sound.drop()
             performActionOnPad { i, j ->
                 // 高亮落到底部的砖块
-                mask[i][j] = if (current?.occupy(i, j) == true) {
+                mask[i][j] = if (_current?.occupy(i, j) == true) {
                     1
                 } else {
                     mask[i][j]
@@ -402,7 +409,7 @@ class Gamer(
         }
 
         // current 已经融入data
-        current = null
+        _current = null
 
         // 砖块触顶，结束游戏
         if (data[0].contains(1)) {
@@ -422,11 +429,11 @@ class Gamer(
             fallJob = null
         } else if (enable) {
             fallJob?.cancel()
-            current = current ?: getNextBlock()
+            _current = _current ?: getNextBlock()
             fallJob = gameScope.launch {
                 while (true) {
                     down(false)
-                    delay(1000)
+                    delay(SPEED[_level].toLong())
                 }
             }
         }
