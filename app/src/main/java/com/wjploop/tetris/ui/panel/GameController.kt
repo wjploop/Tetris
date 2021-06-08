@@ -1,30 +1,36 @@
 package com.wjploop.tetris.ui.panel
 
-import android.widget.Space
-import androidx.compose.foundation.background
+import android.util.Log
+import android.view.MotionEvent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonColors
+import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wjploop.tetris.ext.logx
 import com.wjploop.tetris.ui.gamer.Gamer
 import com.wjploop.tetris.ui.gamer.LocalGamer
-import com.wjploop.tetris.ui.material.LocalSound
-import com.wjploop.tetris.ui.material.Sound
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlin.math.log
 
 private val direction_button_size = 48.dp
 private val system_button_size = 28.dp
@@ -55,10 +61,10 @@ fun DirectionController(gamer: Gamer = LocalGamer.current) {
     ) {
         // todo 支持长按发送命令
         // todo 按钮实现拟物效果
-        GameActionButton(Modifier.align(Alignment.TopCenter), onClick = { gamer.rotate() })
-        GameActionButton(Modifier.align(Alignment.CenterEnd), onClick = { gamer.right() })
-        GameActionButton(Modifier.align(Alignment.BottomCenter), onClick = { gamer.down(true) })
-        GameActionButton(Modifier.align(Alignment.CenterStart), onClick = { gamer.left() })
+        GameActionButton(Modifier.align(Alignment.TopCenter), onAction = { gamer.rotate() })
+        GameActionButton(Modifier.align(Alignment.CenterEnd), onAction = { gamer.right() })
+        GameActionButton(Modifier.align(Alignment.BottomCenter), onAction = { gamer.down(true) })
+        GameActionButton(Modifier.align(Alignment.CenterStart), onAction = { gamer.left() })
 
         Box(
             Modifier
@@ -108,21 +114,21 @@ fun LeftController(gamer: Gamer = LocalGamer.current) {
     ) {
         Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onClick = {
+                GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onAction = {
                     gamer.sounds()
                 })
                 Spacer(Modifier.height(spacer_height))
                 Text("声音", fontSize = 12.sp, color = Color.Black)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onClick = {
+                GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onAction = {
                     gamer.pauseOrResume()
                 })
                 Spacer(Modifier.height(spacer_height))
                 Text("暂停/恢复", fontSize = 12.sp, color = Color.Black)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                GameActionButton(size = system_button_size, color = Color(0xFFF44336), onClick = {
+                GameActionButton(size = system_button_size, color = Color(0xFFF44336), onAction = {
                     gamer.reset()
                 })
                 Spacer(Modifier.height(spacer_height))
@@ -130,7 +136,7 @@ fun LeftController(gamer: Gamer = LocalGamer.current) {
             }
         }
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            GameActionButton(size = 90.dp, onClick = {
+            GameActionButton(size = 90.dp, onAction = {
                 gamer.drop()
             })
         }
@@ -142,18 +148,63 @@ fun GameActionButton(
     modifier: Modifier = Modifier,
     size: Dp = direction_button_size,
     color: Color = Color(0xFF2196F3),
-    onClick: () -> Unit = {}
+    onAction: () -> Unit = {}
 ) {
 
-    Button(
-        onClick = onClick,
-        colors = buttonColors(color),
-        shape = CircleShape,
-        modifier = modifier
-            .size(size = size)
-    ) {
 
+    var isDown by remember {
+        mutableStateOf(false)
     }
+
+    val alpha: Float by animateFloatAsState(if (!isDown) 1f else 0.5f)
+
+
+    val scope = rememberCoroutineScope()
+    var longPressJob: Job? by remember {
+        mutableStateOf(null)
+    }
+
+    Surface(shape = CircleShape,
+        color = color,
+//        border = BorderStroke(2.dp, Color.Black),
+        content = {},
+        modifier = modifier
+            .pointerInteropFilter {
+                when (it.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        logx("action down")
+                        onAction()
+                        isDown = true
+                        longPressJob = scope.launch {
+                            delay(300)
+                            launch {
+                                while (isActive) {
+                                    delay(60)
+                                    logx("do action while is press")
+                                    onAction()
+                                }
+                            }
+                        }
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        logx("action up")
+                        logx("current longPressJob? ${longPressJob}")
+                        longPressJob?.cancel()
+                        isDown = false
+                    }
+                    // not found trigger this event
+                    MotionEvent.ACTION_CANCEL -> {
+                        logx { "action cancel" }
+                        longPressJob?.cancel()
+                        isDown = false
+                    }
+                }
+                true
+            }
+            .alpha(alpha = alpha)
+            .size(size = size)
+    )
+
 }
 
 @Preview

@@ -159,7 +159,7 @@ class Gamer(
     private fun performGameAction(action: (current: Block) -> Unit) {
         val actionName = action.javaClass.name.split("$").getOrNull(1)
         if (_state != GameState.running) {
-            logx("can't do action $actionName because current state is not ${GameState.running} but $_state ")
+//            logx("can't do action $actionName because current state is not ${GameState.running} but $_state ")
             return
         }
         _current?.let {
@@ -441,7 +441,7 @@ class Gamer(
             fallJob = gameScope.launch {
                 while (true) {
                     down(false)
-                    delay(SPEED[_level].toLong())
+                    delay(SPEED[_level - 1].toLong())
                 }
             }
         }
