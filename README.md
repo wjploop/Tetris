@@ -2,7 +2,7 @@
 
 > 参考 [flutter-tetris](https://github.com/boyan01/flutter-tetris)
 
-使用Android Jetpack Compose开发的俄罗斯方块，目前基本功能基本完成  
+使用Android Jetpack Compose开发的俄罗斯方块，目前基本功能已完成  
 
 
 ##  效果预览
