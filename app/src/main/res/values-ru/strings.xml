@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">дробь</string>
+    <string name="clear">Очистить</string>
+    <string name="level">уровень</string>
+    <string name="next">След.</string>
+    <string name="sound">звук</string>
+    <string name="pause_and_resume">пауза/пауза</string>
+    <string name="reset">сбросить</string>
+</resources>

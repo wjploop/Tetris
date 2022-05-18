@@ -10,12 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -115,21 +117,21 @@ fun LeftController(gamer: Gamer = LocalGamer.current) {
                     gamer.sounds()
                 })
                 Spacer(Modifier.height(spacer_height))
-                Text("声音", fontSize = 12.sp, color = Color.Black)
+                Text(stringResource(R.string.sound), fontSize = 12.sp, color = Color.Black)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 GameActionButton(size = system_button_size, color = Color(0xFF2dc421), onAction = {
                     gamer.pauseOrResume()
                 })
                 Spacer(Modifier.height(spacer_height))
-                Text("暂停/恢复", fontSize = 12.sp, color = Color.Black)
+                Text(stringResource(R.string.pause_and_resume), fontSize = 12.sp, color = Color.Black)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 GameActionButton(size = system_button_size, color = Color(0xFFF44336), onAction = {
                     gamer.reset()
                 })
                 Spacer(Modifier.height(spacer_height))
-                Text("重置", fontSize = 12.sp, color = Color.Black)
+                Text(stringResource(R.string.reset), fontSize = 12.sp, color = Color.Black)
             }
         }
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
@@ -140,6 +142,7 @@ fun LeftController(gamer: Gamer = LocalGamer.current) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun GameActionButton(
     modifier: Modifier = Modifier,
@@ -197,7 +200,7 @@ fun GameActionButton(
     ) {
         val shadowWidth = button_shadow_stroke_width.toPx()
         // refer to https://stackoverflow.com/questions/5197892/add-shadow-to-custom-shape-on-android
-        drawImage(context.resources.getDrawable(R.drawable.game_btn_shadow).toBitmap(
+        drawImage(context.resources.getDrawable(R.drawable.game_btn_shadow,null).toBitmap(
             width = size.toPx().toInt(),
             height = size.toPx().toInt(),
         ).asImageBitmap())

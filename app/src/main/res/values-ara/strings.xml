@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">كسري</string>
+    <string name="clear">واضح</string>
+    <string name="level">أفقي</string>
+    <string name="next">التالي</string>
+    <string name="sound">صوت .</string>
+    <string name="pause_and_resume">تعليق/مواصلة</string>
+    <string name="reset">إعادة</string>
+</resources>

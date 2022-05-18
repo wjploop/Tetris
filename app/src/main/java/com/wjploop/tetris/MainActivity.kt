@@ -9,9 +9,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.wjploop.tetris.ui.gamer.Game
 import com.wjploop.tetris.ui.material.Brick
 import com.wjploop.tetris.ui.material.BrickType
@@ -22,6 +26,7 @@ import com.wjploop.tetris.ui.theme.TetrisTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             TetrisTheme {
                 // A surface container using the 'background' color from the theme

@@ -390,9 +390,17 @@ class Gamer(
 
             _cleared += clearLines.size
             _points += clearLines.size * _level * 5
+            // 消除4个，增加分数翻倍
+            if (clearLines.size == 4) {
+                _points += clearLines.size * 2 * _level * 5
+            }
 
-            // todo 消除50行上升一个等级，这算法似乎不够好，
-            _level = (_cleared / 50).coerceIn(_level, GAME_LEVEL_MAX)
+            // 50, 100, 200, 400, 800, 1600
+            // 1, 2, 4, 8, 32
+            //
+            val arr = intArrayOf(1, 2, 4, 8, 32)
+            val index = arr.firstOrNull { it > _points / 50 } ?: arr.size
+            _level = (index).coerceIn(_level, GAME_LEVEL_MAX)
 
         } else {
             Log.d("wolf", "mixed no clear")

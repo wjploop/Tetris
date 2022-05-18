@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">Points</string>
+    <string name="clear">C\'est clair.</string>
+    <string name="level">Niveau</string>
+    <string name="next">Suivant.</string>
+    <string name="sound">Le son</string>
+    <string name="pause_and_resume">Pause/reprise</string>
+    <string name="reset">Réinitialiser</string>
+</resources>

@@ -2,9 +2,9 @@
     <string name="app_name" translatable="false">Tetris</string>
     <string name="score">score</string>
     <string name="clear">clear</string>
-    <string name="level">level</string>
-    <string name="next">next</string>
-    <string name="sound">sound</string>
-    <string name="pause_and_resume">pause/resume</string>
+    <string name="level">niveau</string>
+    <string name="next">volgende</string>
+    <string name="sound">geluid</string>
+    <string name="pause_and_resume">pauzeren/hervatten</string>
     <string name="reset">reset</string>
 </resources>

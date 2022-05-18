@@ -9,12 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wjploop.tetris.R
 import com.wjploop.tetris.ui.gamer.*
 import com.wjploop.tetris.ui.material.*
 import java.util.*
@@ -84,22 +86,22 @@ fun GameUninitialized(gameData: GameData = LocalGameData.current) {
 @Composable
 fun StatusPanel(gameData: GameData = LocalGameData.current) {
     Column(Modifier.padding(8.dp)) {
-        Text("分数", style = TextStyle(fontWeight = FontWeight.Bold))
+        Text(stringResource(R.string.score), style = TextStyle(fontWeight = FontWeight.Bold))
         Spacer(modifier = Modifier.height(4.dp))
         GamerNumber(gameData.points)
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text("消除", style = TextStyle(fontWeight = FontWeight.Bold))
+        Text(stringResource(R.string.clear), style = TextStyle(fontWeight = FontWeight.Bold))
         Spacer(modifier = Modifier.height(4.dp))
         GamerNumber(gameData.clear)
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text("级别", style = TextStyle(fontWeight = FontWeight.Bold))
+        Text(stringResource(R.string.level), style = TextStyle(fontWeight = FontWeight.Bold))
         Spacer(modifier = Modifier.height(4.dp))
         GamerNumber(gameData.level)
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text("下一个", style = TextStyle(fontWeight = FontWeight.Bold))
+        Text(stringResource(R.string.next), style = TextStyle(fontWeight = FontWeight.Bold))
         Spacer(modifier = Modifier.height(4.dp))
         NextBlock()
 
@@ -179,7 +181,7 @@ fun NextBlock(gameData: GameData = LocalGameData.current) {
 @Composable
 fun PlayerPad(
     gameData: GameData = LocalGameData.current,
-    gamer: Gamer = LocalGamer.current
+//    gamer: Gamer = LocalGamer.current
 ) {
 
     val data = gameData.data

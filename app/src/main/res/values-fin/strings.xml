@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">pistemäärä</string>
+    <string name="clear">kirkas</string>
+    <string name="level">taso</string>
+    <string name="next">seuraava</string>
+    <string name="sound">ääni</string>
+    <string name="pause_and_resume">keskeytä/jatka</string>
+    <string name="reset">nollaus</string>
+</resources>

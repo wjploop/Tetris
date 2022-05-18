@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">점수</string>
+    <string name="clear">명확했어</string>
+    <string name="level">수준.</string>
+    <string name="next">다음</string>
+    <string name="sound">소리</string>
+    <string name="pause_and_resume">일시중지/계속</string>
+    <string name="reset">재설정</string>
+</resources>

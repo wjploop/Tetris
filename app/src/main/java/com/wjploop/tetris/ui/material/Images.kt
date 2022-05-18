@@ -145,10 +145,7 @@ fun IconDragon(animate: Boolean) {
 
 }
 
-@Composable
-fun DragonFrame(frame: Int) {
 
-}
 
 
 @Preview

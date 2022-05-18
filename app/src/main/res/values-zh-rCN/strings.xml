@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">Tetris</string>
+    <string name="score">分数</string>
+    <string name="clear">消除</string>
+    <string name="level">级别</string>
+    <string name="next">下一个</string>
+    <string name="sound">声音</string>
+    <string name="pause_and_resume">暂停/恢复</string>
+    <string name="reset">重置</string>
+</resources>
