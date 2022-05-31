@@ -7,4 +7,7 @@
     <string name="sound">Le son</string>
     <string name="pause_and_resume">Pause/reprise</string>
     <string name="reset">Réinitialiser</string>
+    <string name="feedback">Feedback</string>
+    <string name="share">Total</string>
+    <string name="msg_link_has_been_copyed">Lien d\'application copié dans le presse - papiers</string>
 </resources>

@@ -7,4 +7,7 @@
     <string name="sound">صوت .</string>
     <string name="pause_and_resume">تعليق/مواصلة</string>
     <string name="reset">إعادة</string>
+    <string name="feedback">تغذية مرتدة</string>
+    <string name="share">مشترك</string>
+    <string name="msg_link_has_been_copyed">تم نسخ رابط التطبيق إلى الحافظة</string>
 </resources>

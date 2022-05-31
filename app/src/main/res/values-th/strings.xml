@@ -7,4 +7,7 @@
     <string name="sound">กระแสเสียง</string>
     <string name="pause_and_resume">หยุดชั่วคราวและต่อเนื่อง</string>
     <string name="reset">ตั้งค่าใหม่</string>
+    <string name="feedback">ข้อเสนอแนะ</string>
+    <string name="share">คอมมอน</string>
+    <string name="msg_link_has_been_copyed">โปรแกรมเชื่อมโยงได้ถูกคัดลอกไปยังคลิปบอร์ด</string>
 </resources>

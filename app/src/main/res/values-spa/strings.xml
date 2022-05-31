@@ -7,4 +7,7 @@
     <string name="sound">Sonido</string>
     <string name="pause_and_resume">Pausa/continuación</string>
     <string name="reset">Reset</string>
+    <string name="feedback">Retroalimentación</string>
+    <string name="share">Copropiedad</string>
+    <string name="msg_link_has_been_copyed">Enlace de aplicación copiado al portapapeles</string>
 </resources>

@@ -7,4 +7,7 @@
     <string name="sound">音</string>
     <string name="pause_and_resume">停止/再開</string>
     <string name="reset">リセット</string>
+    <string name="feedback">フィードバック</string>
+    <string name="share">シェア</string>
+    <string name="msg_link_has_been_copyed">アプリケーションのリンクをクリップボードにコピーされている</string>
 </resources>

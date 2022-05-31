@@ -7,4 +7,7 @@
     <string name="sound">Ton</string>
     <string name="pause_and_resume">Pause/Fortsetzen</string>
     <string name="reset">Zurücksetzen</string>
+    <string name="feedback">Feedback</string>
+    <string name="share">Teilen</string>
+    <string name="msg_link_has_been_copyed">App-Link wurde in die Zwischenablage kopiert</string>
 </resources>

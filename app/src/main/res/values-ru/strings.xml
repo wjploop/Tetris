@@ -7,4 +7,7 @@
     <string name="sound">звук</string>
     <string name="pause_and_resume">пауза/пауза</string>
     <string name="reset">сбросить</string>
+    <string name="feedback">обратная связь</string>
+    <string name="share">совместное владение</string>
+    <string name="msg_link_has_been_copyed">ссылка на приложение была скопирована в буфер обмена</string>
 </resources>

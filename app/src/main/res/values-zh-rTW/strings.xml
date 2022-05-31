@@ -7,4 +7,7 @@
     <string name="sound">聲音</string>
     <string name="pause_and_resume">暫停/繼續</string>
     <string name="reset">重置</string>
+    <string name="feedback">迴響</string>
+    <string name="share">分享</string>
+    <string name="msg_link_has_been_copyed">應用程序連結已複製到剪貼板</string>
 </resources>

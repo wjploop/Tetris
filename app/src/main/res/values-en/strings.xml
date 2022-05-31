@@ -7,4 +7,7 @@
     <string name="sound">sound</string>
     <string name="pause_and_resume">pause/resume</string>
     <string name="reset">reset</string>
+    <string name="feedback">feedback</string>
+    <string name="share">share</string>
+    <string name="msg_link_has_been_copyed">app link has been copy to clipboard</string>
 </resources>

@@ -7,4 +7,7 @@
     <string name="sound">ääni</string>
     <string name="pause_and_resume">keskeytä/jatka</string>
     <string name="reset">nollaus</string>
+    <string name="feedback">palaute</string>
+    <string name="share">osuus</string>
+    <string name="msg_link_has_been_copyed">Sovelluslinkki on kopioitu leikepöydälle</string>
 </resources>
