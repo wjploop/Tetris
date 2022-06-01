@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name" translatable="false">Tetris</string>
+    <string name="app_name">俄罗斯方块</string>
     <string name="score">分数</string>
-    <string name="clear">消除</string>
-    <string name="level">级别</string>
+    <string name="clear">清楚的</string>
+    <string name="level">数量</string>
     <string name="next">下一个</string>
     <string name="sound">声音</string>
     <string name="pause_and_resume">暂停/恢复</string>
     <string name="reset">重置</string>
     <string name="feedback">反馈</string>
-    <string name="share">分享</string>
+    <string name="share">共有</string>
     <string name="msg_link_has_been_copyed">应用程序链接已复制到剪贴板</string>
 </resources>

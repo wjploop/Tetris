@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tetris</string>
+    <string name="score">punteggio</string>
+    <string name="clear">chiaro</string>
+    <string name="level">livello</string>
+    <string name="next">successivo</string>
+    <string name="sound">suono</string>
+    <string name="pause_and_resume">pausa/ripresa</string>
+    <string name="reset">reset</string>
+    <string name="feedback">feedback</string>
+    <string name="share">quota</string>
+    <string name="msg_link_has_been_copyed">il link dell'app è stato copiato negli appunti</string>
+</resources>

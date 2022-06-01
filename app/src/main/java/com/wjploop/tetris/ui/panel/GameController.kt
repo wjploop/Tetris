@@ -222,11 +222,11 @@ fun GameActionButton(
 @Preview
 @Composable
 fun PreviewGameController() {
-    GameController()
+//    GameController()
 }
 
 @Preview
 @Composable
 fun PreViewLeftGameController() {
-    LeftController()
+//    LeftController()
 }

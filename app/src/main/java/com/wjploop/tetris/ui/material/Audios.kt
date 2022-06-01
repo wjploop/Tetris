@@ -20,14 +20,16 @@ class Sound(context: Context) {
 
     var mute = false
 
-    private val sound: SoundPool = SoundPool.Builder()
-        .setAudioAttributes(
-            AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build()
-        )
-        .setMaxStreams(3)
-        .build()
+    private val sound: SoundPool by lazy {
+         SoundPool.Builder()
+            .setAudioAttributes(
+                AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+            )
+            .setMaxStreams(3)
+            .build()
+    }
 
     private val soundResIds = intArrayOf(
         R.raw.clean,
@@ -40,9 +42,11 @@ class Sound(context: Context) {
 
     // todo 应该可以懒加载这些资源,或开个线程加载
     // load resId to sound id, so that the sound pool can play it
-    private val soundIds = soundResIds.map { resId ->
-        Pair(resId, sound.load(context, resId, 1))
-    }.toMap()
+    private val soundIds by  lazy {
+        soundResIds.map { resId ->
+            Pair(resId, sound.load(context, resId, 1))
+        }.toMap()
+    }
 
     private fun play(resId: Int) {
         if (mute) {

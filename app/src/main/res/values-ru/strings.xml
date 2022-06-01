@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name" translatable="false">Tetris</string>
+    <string name="app_name">русский квадрат</string>
     <string name="score">дробь</string>
     <string name="clear">Очистить</string>
-    <string name="level">уровень</string>
+    <string name="level">количество</string>
     <string name="next">След.</string>
     <string name="sound">звук</string>
-    <string name="pause_and_resume">пауза/пауза</string>
+    <string name="pause_and_resume">пауза / восстановление</string>
     <string name="reset">сбросить</string>
     <string name="feedback">обратная связь</string>
     <string name="share">совместное владение</string>

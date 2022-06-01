@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name" translatable="false">Tetris</string>
+    <string name="app_name">Tetris</string>
     <string name="score">คะแนน</string>
     <string name="clear">ชัดเจน</string>
-    <string name="level">ระดับตำแหน่ง</string>
+    <string name="level">จำนวนรวม</string>
     <string name="next">คนต่อไป</string>
     <string name="sound">กระแสเสียง</string>
-    <string name="pause_and_resume">หยุดชั่วคราวและต่อเนื่อง</string>
+    <string name="pause_and_resume">หยุดการกู้คืน</string>
     <string name="reset">ตั้งค่าใหม่</string>
     <string name="feedback">ข้อเสนอแนะ</string>
     <string name="share">คอมมอน</string>

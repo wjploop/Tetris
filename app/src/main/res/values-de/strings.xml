@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Tetris</string>
+    <string name="app_name">Tetris</string>
     <string name="score">Punktzahl</string>
     <string name="clear">klar</string>
     <string name="level">Ebene</string>
