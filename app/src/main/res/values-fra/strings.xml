@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tetris</string>
     <string name="score">Points</string>
-    <string name="clear">C'est clair.</string>
+    <string name="clear">C\'est clair.</string>
     <string name="level">Nombre</string>
     <string name="next">Suivant.</string>
     <string name="sound">Le son</string>
@@ -9,5 +9,5 @@
     <string name="reset">Réinitialiser</string>
     <string name="feedback">Feedback</string>
     <string name="share">Total</string>
-    <string name="msg_link_has_been_copyed">Lien d'application copié dans le presse - papiers</string>
+    <string name="msg_link_has_been_copyed">Lien d\'application copié dans le presse - papiers</string>
 </resources>
