@@ -15,5 +15,3 @@
 local.properties
 
 .idea/*
-/app/release/*
-*.aab
