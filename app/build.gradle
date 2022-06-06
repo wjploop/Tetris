@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
 }
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = file('key.properties')
+def keystorePropertiesFile = file('../../key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
