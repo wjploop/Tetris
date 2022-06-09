@@ -171,6 +171,7 @@ fun GameActionButton(
                     logx("action down")
                     onAction()
                     isDown = true
+                    scope.cancel()
                     longPressJob = scope.launch {
                         delay(300)
                         launch {
@@ -200,10 +201,13 @@ fun GameActionButton(
     ) {
         val shadowWidth = button_shadow_stroke_width.toPx()
         // refer to https://stackoverflow.com/questions/5197892/add-shadow-to-custom-shape-on-android
-        drawImage(context.resources.getDrawable(R.drawable.game_btn_shadow,null).toBitmap(
-            width = size.toPx().toInt(),
-            height = size.toPx().toInt(),
-        ).asImageBitmap())
+        drawImage(
+            context.resources.getDrawable(R.drawable.game_btn_shadow, null).toBitmap(
+                width = size.toPx().toInt(),
+                height = size.toPx().toInt(),
+            ).asImageBitmap()
+        )
+
 
         // draw shadow
 //        drawCircle(
@@ -211,9 +215,10 @@ fun GameActionButton(
 //            style = Stroke(width = shadowWidth*2)
 //        )
 //         draw content
-        inset(shadowWidth / 2) {
-            drawCircle(color = color.copy(alpha = alpha))
-        }
+//        inset(shadowWidth / 2) {
+//        }
+        drawCircle(color = color.copy(alpha = alpha), size.toPx() / 2 - shadowWidth / 2)
+
     }
 
 

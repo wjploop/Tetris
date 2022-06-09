@@ -5,7 +5,7 @@
     <string name="level">レベル</string>
     <string name="next">次</string>
     <string name="sound">音</string>
-    <string name="pause_and_resume">一時停止/再開</string>
+    <string name="pause_and_resume">停止/再開</string>
     <string name="reset">リセット</string>
     <string name="feedback">フィードバック</string>
     <string name="share">シェア</string>
