@@ -303,6 +303,10 @@ class Gamer(
     }
 
     fun onNewGameState(state: GameState = this._state) {
+        if (state == GameState.reset) {
+            _cleared = 0
+            _points = 0
+        }
         this._state = state
         gameScope.launch {
             setGameData(
@@ -399,8 +403,9 @@ class Gamer(
             // 1, 2, 4, 8, 32
             //
             val arr = intArrayOf(1, 2, 4, 8, 32)
-            val index = arr.firstOrNull { it > _points / 50 } ?: arr.size
-            _level = (index).coerceIn(_level, GAME_LEVEL_MAX)
+            // just for relax, no level up
+//            val index = arr.firstOrNull { it > _points / 50 } ?: arr.size
+//            _level = (index).coerceIn(_level, GAME_LEVEL_MAX)
 
         } else {
             Log.d("wolf", "mixed no clear")

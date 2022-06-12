@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">러시아 네모</string>
+    <string name="app_name">경전 러시아 네모난 덩어리</string>
     <string name="score">분수</string>
     <string name="clear">분명하다</string>
     <string name="level">수량</string>
@@ -10,4 +10,5 @@
     <string name="feedback">피드백</string>
     <string name="share">공유한다</string>
     <string name="msg_link_has_been_copyed">응용 프로그램 링크가 클립보드로 복사됨</string>
+    <string name="msg_about">다운로드 체험에 감사드립니다~\n어떤 문제가 있어도 피드백을 환영합니다</string>
 </resources>

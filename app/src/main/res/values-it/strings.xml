@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tetric</string>
+    <string name="app_name">Tetris classico</string>
     <string name="score">punteggio</string>
     <string name="clear">chiaro</string>
     <string name="level">livello</string>
@@ -10,4 +10,5 @@
     <string name="feedback">feedback</string>
     <string name="share">quota</string>
     <string name="msg_link_has_been_copyed">il link dell\'app è stato copiato negli appunti</string>
+    <string name="msg_about">Grazie per la tua esperienza di download ~ \ NIF si incontrano problemi, si prega di darci un feedback</string>
 </resources>

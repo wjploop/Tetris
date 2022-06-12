@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">تتريس</string>
+    <string name="app_name">تتريس الكلاسيكية</string>
     <string name="score">كسري</string>
     <string name="clear">واضح</string>
     <string name="level">الكمية</string>
@@ -10,4 +10,5 @@
     <string name="feedback">تغذية مرتدة</string>
     <string name="share">مشترك</string>
     <string name="msg_link_has_been_copyed">تم نسخ رابط التطبيق إلى الحافظة</string>
+    <string name="msg_about">شكرا لك على التحميل و الخبرة . . . إذا كان لديك أي مشاكل ، ونحن نقدر تعليقاتك .</string>
 </resources>

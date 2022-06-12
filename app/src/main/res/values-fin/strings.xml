@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tetris</string>
+    <string name="app_name">Klassinen Tetris</string>
     <string name="score">pistemäärä</string>
     <string name="clear">kirkas</string>
     <string name="level">taso</string>
@@ -10,4 +10,5 @@
     <string name="feedback">palaute</string>
     <string name="share">osuus</string>
     <string name="msg_link_has_been_copyed">Sovelluslinkki on kopioitu leikepöydälle</string>
+    <string name="msg_about">Kiitos latauskokemuksestasi ~ \ NIF jos kohtaat ongelmia, anna meille palautetta</string>
 </resources>

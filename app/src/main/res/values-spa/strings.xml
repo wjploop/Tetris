@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tetris</string>
+    <string name="app_name">Tetris clásico</string>
     <string name="score">Fracción</string>
     <string name="clear">Claro</string>
     <string name="level">Cantidad</string>
@@ -10,4 +10,5 @@
     <string name="feedback">Retroalimentación</string>
     <string name="share">Copropiedad</string>
     <string name="msg_link_has_been_copyed">Enlace de aplicación copiado al portapapeles</string>
+    <string name="msg_about">Gracias por su experiencia de descarga.</string>
 </resources>

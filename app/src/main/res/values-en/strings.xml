@@ -10,5 +10,5 @@
     <string name="feedback">feedback</string>
     <string name="share">share</string>
     <string name="msg_link_has_been_copyed">app link has been copy to clipboard</string>
-    <string name="msg_about">Thank you for your download and experience ~ \n If you encounter any problems, your feedback will be appreciated</string>
+    <string name="msg_about">Thank you for your download experience ~ \ NIF you encounter any problems, please give us feedback</string>
 </resources>

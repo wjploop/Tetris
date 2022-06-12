@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tetris</string>
+    <string name="app_name">คลาสสิก Tetris</string>
     <string name="score">คะแนน</string>
     <string name="clear">ชัดเจน</string>
     <string name="level">จำนวนรวม</string>
@@ -10,4 +10,5 @@
     <string name="feedback">ข้อเสนอแนะ</string>
     <string name="share">คอมมอน</string>
     <string name="msg_link_has_been_copyed">โปรแกรมเชื่อมโยงได้ถูกคัดลอกไปยังคลิปบอร์ด</string>
+    <string name="msg_about">ขอบคุณสำหรับประสบการณ์การดาวน์โหลดของคุณ</string>
 </resources>

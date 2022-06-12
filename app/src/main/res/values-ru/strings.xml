@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">русский квадрат</string>
+    <string name="app_name">классический русский квадрат</string>
     <string name="score">дробь</string>
     <string name="clear">Очистить</string>
     <string name="level">количество</string>
     <string name="next">След.</string>
     <string name="sound">звук</string>
-    <string name="pause_and_resume">пауза / восстан</string>
+    <string name="pause_and_resume">пауза / восстановление</string>
     <string name="reset">сбросить</string>
     <string name="feedback">обратная связь</string>
     <string name="share">совместное владение</string>
     <string name="msg_link_has_been_copyed">ссылка на приложение была скопирована в буфер обмена</string>
+    <string name="msg_about">Спасибо за загрузку опыта \ \ n с любыми проблемами</string>
 </resources>

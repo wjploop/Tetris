@@ -10,4 +10,6 @@
     <string name="feedback">feedback</string>
     <string name="share">share</string>
     <string name="msg_link_has_been_copyed">app link is gekopieerd naar klembord</string>
+    <string name="msg_about">Bedankt voor uw download en ervaring ~ \n Als u problemen ondervindt, zal uw feedback worden gewaardeerd</string>
+
 </resources>

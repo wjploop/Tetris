@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">テトリス</string>
+    <string name="app_name">クラシックテトリス</string>
     <string name="score">スコア</string>
     <string name="clear">クリア</string>
     <string name="level">レベル</string>
@@ -10,4 +10,5 @@
     <string name="feedback">フィードバック</string>
     <string name="share">シェア</string>
     <string name="msg_link_has_been_copyed">アプリケーションのリンクをクリップボードにコピーされている</string>
+    <string name="msg_about">ダウンロード体験に感謝します～n何か問題があったら、フィードバックを歓迎します。</string>
 </resources>
