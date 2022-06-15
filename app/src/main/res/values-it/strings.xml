@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tetris classico</string>
+    <string name="app_name">Partita di mattoni</string>
     <string name="score">punteggio</string>
     <string name="clear">chiaro</string>
     <string name="level">livello</string>

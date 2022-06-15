@@ -14,8 +14,8 @@ android {
         applicationId "com.wjploop.tetris"
         minSdk 21
         targetSdk 31
-        versionCode 4
-        versionName "1.3"
+        versionCode 5
+        versionName "1.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -34,10 +34,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
         }
     }
     bundle {

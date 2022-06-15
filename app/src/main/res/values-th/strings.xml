@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">คลาสสิก Tetris</string>
+    <string name="app_name">การแข่งขันอิฐ</string>
     <string name="score">คะแนน</string>
     <string name="clear">ชัดเจน</string>
     <string name="level">จำนวนรวม</string>

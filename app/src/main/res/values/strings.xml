@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Classic Tetris</string>
+    <string name="app_name">Brick Match</string>
     <string name="score">score</string>
     <string name="clear">clear</string>
     <string name="level">level</string>

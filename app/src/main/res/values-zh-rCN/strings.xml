@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">俄罗斯方块</string>
+    <string name="app_name">砖块消消乐</string>
     <string name="score">分数</string>
     <string name="clear">清除</string>
     <string name="level">等级</string>

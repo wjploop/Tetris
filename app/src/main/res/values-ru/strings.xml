@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">классический русский квадрат</string>
+    <string name="app_name">Кирпичная спичка</string>
     <string name="score">дробь</string>
     <string name="clear">Очистить</string>
     <string name="level">количество</string>

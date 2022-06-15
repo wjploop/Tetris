@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">クラシックテトリス</string>
+    <string name="app_name">ブリックマッチ</string>
     <string name="score">スコア</string>
     <string name="clear">クリア</string>
     <string name="level">レベル</string>
