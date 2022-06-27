@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Brick Match</string>
+    <string name="app_name">Clasical Tetris</string>
     <string name="score">pistemäärä</string>
     <string name="clear">kirkas</string>
     <string name="level">taso</string>
@@ -11,4 +11,8 @@
     <string name="share">osuus</string>
     <string name="msg_link_has_been_copyed">Sovelluslinkki on kopioitu leikepöydälle</string>
     <string name="msg_about">Kiitos latauskokemuksestasi ~ \ NIF jos kohtaat ongelmia, anna meille palautetta</string>
+    <string name="no_app_found">sovellusta ei löytynyt</string>
+    <string name="error">virhe:%s</string>
+    <string name="share_text">Hei, mene%s lataamaan%s</string>
+    <string name="invite_via">Kutsu kautta</string>
 </resources>

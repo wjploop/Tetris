@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Partita di mattoni</string>
+    <string name="app_name">Tetris classico</string>
     <string name="score">punteggio</string>
     <string name="clear">chiaro</string>
     <string name="level">livello</string>
@@ -11,4 +11,8 @@
     <string name="share">quota</string>
     <string name="msg_link_has_been_copyed">il link dell\'app è stato copiato negli appunti</string>
     <string name="msg_about">Grazie per la tua esperienza di download ~ \ NIF si incontrano problemi, si prega di darci un feedback</string>
+    <string name="no_app_found">app non trovata</string>
+    <string name="error">errore:%s</string>
+    <string name="share_text">Ehi, vai%s per scaricare%s</string>
+    <string name="invite_via">Invita via</string>
 </resources>

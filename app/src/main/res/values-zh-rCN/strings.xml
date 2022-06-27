@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">砖块消消乐</string>
+    <string name="app_name">俄罗斯方块</string>
     <string name="score">分数</string>
     <string name="clear">清除</string>
     <string name="level">等级</string>
@@ -11,5 +11,8 @@
     <string name="share">分享</string>
     <string name="msg_link_has_been_copyed">应用程序链接已复制到剪贴板</string>
     <string name="msg_about">感谢你的下载体验～\n遇到任何问题，欢迎反馈</string>
-
+    <string name="no_app_found">找不到应用程序</string>
+    <string name="error">错误：%s</string>
+    <string name="share_text">嘿，转到%s下载%s</string>
+    <string name="invite_via">通过邀请</string>
 </resources>

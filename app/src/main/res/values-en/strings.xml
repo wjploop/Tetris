@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Brick Match</string>
+    <string name="app_name">Clasical Tetris</string>
     <string name="score">score</string>
     <string name="clear">clear</string>
     <string name="level">level</string>
@@ -11,4 +11,8 @@
     <string name="share">share</string>
     <string name="msg_link_has_been_copyed">app link has been copy to clipboard</string>
     <string name="msg_about">Thank you for your download experience ~ \ NIF you encounter any problems, please give us feedback</string>
+    <string name="no_app_found">app not found</string>
+    <string name="error">error: %s</string>
+    <string name="share_text">Hey, go %s to download %s</string>
+    <string name="invite_via">Invite via</string>
 </resources>

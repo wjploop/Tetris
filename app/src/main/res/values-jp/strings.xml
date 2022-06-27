@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ブリックマッチ</string>
+    <string name="app_name">テトリス</string>
     <string name="score">スコア</string>
     <string name="clear">クリア</string>
     <string name="level">レベル</string>
@@ -11,4 +11,8 @@
     <string name="share">シェア</string>
     <string name="msg_link_has_been_copyed">アプリケーションのリンクをクリップボードにコピーされている</string>
     <string name="msg_about">ダウンロード体験に感謝します～n何か問題があったら、フィードバックを歓迎します。</string>
+    <string name="no_app_found">アプリが見つかりません</string>
+    <string name="error">エラー:% s</string>
+    <string name="share_text">おい、% sをダウンロードしてください</string>
+    <string name="invite_via">経由で招待</string>
 </resources>

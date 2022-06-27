@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">การแข่งขันอิฐ</string>
+    <string name="app_name">เตตริส</string>
     <string name="score">คะแนน</string>
     <string name="clear">ชัดเจน</string>
     <string name="level">จำนวนรวม</string>
@@ -11,4 +11,8 @@
     <string name="share">คอมมอน</string>
     <string name="msg_link_has_been_copyed">โปรแกรมเชื่อมโยงได้ถูกคัดลอกไปยังคลิปบอร์ด</string>
     <string name="msg_about">ขอบคุณสำหรับประสบการณ์การดาวน์โหลดของคุณ</string>
+    <string name="no_app_found">ไม่พบโปรแกรม</string>
+    <string name="error">ข้อผิดพลาด</string>
+    <string name="share_text">เฮ้ไป %s เพื่อดาวน์โหลด %s</string>
+    <string name="invite_via">โดยเชิญ</string>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">磚塊消消樂</string>
+    <string name="app_name">俄羅斯方塊</string>
     <string name="score">分數</string>
     <string name="clear">清除</string>
     <string name="level">等級</string>
@@ -11,5 +11,8 @@
     <string name="share">分享</string>
     <string name="msg_link_has_been_copyed">應用程序連結已複製到剪貼板</string>
     <string name="msg_about">感謝你的下載體驗～\n遇到任何問題，歡迎迴響</string>
-
+    <string name="no_app_found">找不到應用程序</string>
+    <string name="error">錯誤：%s</string>
+    <string name="share_text">嘿，点击 %s 来下载 %s</string>
+    <string name="invite_via">分享到</string>
 </resources>

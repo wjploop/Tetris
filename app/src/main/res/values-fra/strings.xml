@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Match de brique</string>
+    <string name="app_name">TétrisClasical Tetris</string>
     <string name="score">Points</string>
     <string name="clear">C\'est clair.</string>
     <string name="level">Nombre</string>
@@ -11,4 +11,8 @@
     <string name="share">Total</string>
     <string name="msg_link_has_been_copyed">Lien d\'application copié dans le presse - papiers</string>
     <string name="msg_about">Merci pour votre expérience de téléchargement</string>
+    <string name="no_app_found">Application introuvable</string>
+    <string name="error">Erreur:% s</string>
+    <string name="share_text">Allez à% s pour télécharger% s</string>
+    <string name="invite_via">Par invitation</string>
 </resources>

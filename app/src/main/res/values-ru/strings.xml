@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Кирпичная спичка</string>
+    <string name="app_name">тетрис</string>
     <string name="score">дробь</string>
     <string name="clear">Очистить</string>
     <string name="level">количество</string>
@@ -11,4 +11,8 @@
     <string name="share">совместное владение</string>
     <string name="msg_link_has_been_copyed">ссылка на приложение была скопирована в буфер обмена</string>
     <string name="msg_about">Спасибо за загрузку опыта \ \ n с любыми проблемами</string>
+    <string name="no_app_found">Невозможно найти приложение</string>
+    <string name="error">Ошибка:% s</string>
+    <string name="share_text">перейти к загрузке% s</string>
+    <string name="invite_via">По приглашению</string>
 </resources>

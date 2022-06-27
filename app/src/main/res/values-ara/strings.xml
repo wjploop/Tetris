@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">مباراة الطوب</string>
+    <string name="app_name">تتريس</string>
     <string name="score">كسري</string>
     <string name="clear">واضح</string>
     <string name="level">الكمية</string>
@@ -11,4 +11,8 @@
     <string name="share">مشترك</string>
     <string name="msg_link_has_been_copyed">تم نسخ رابط التطبيق إلى الحافظة</string>
     <string name="msg_about">شكرا لك على التحميل و الخبرة . . . إذا كان لديك أي مشاكل ، ونحن نقدر تعليقاتك .</string>
+    <string name="no_app_found">لا يمكن العثور على التطبيق</string>
+    <string name="error">خطأ : %s</string>
+    <string name="share_text">اذهب إلى %s لتحميل %s</string>
+    <string name="invite_via">عن طريق الدعوة</string>
 </resources>

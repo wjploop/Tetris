@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jogo de tijolos</string>
+    <string name="app_name">Clasical Tetris</string>
     <string name="score">pontuação</string>
     <string name="clear">claro</string>
     <string name="level">nível</string>
@@ -11,4 +11,8 @@
     <string name="share">share</string>
     <string name="msg_link_has_been_copyed">A ligação da aplicação foi copiada para a área de transferência</string>
     <string name="msg_about">Obrigado pela sua experiência de download ~ \ NIF você encontrar quaisquer problemas, por favor, nos dê feedback</string>
+    <string name="no_app_found">aplicação não encontrada</string>
+    <string name="error">erro:%s</string>
+    <string name="share_text">Ei, vá%s para baixar%s</string>
+    <string name="invite_via">Convidar via</string>
 </resources>

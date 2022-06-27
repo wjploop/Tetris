@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Brick Match</string>
+    <string name="app_name" translatable="false">Clasical Tetris</string>
     <string name="score">score</string>
     <string name="clear">clear</string>
     <string name="level">niveau</string>
@@ -11,5 +11,8 @@
     <string name="share">share</string>
     <string name="msg_link_has_been_copyed">app link is gekopieerd naar klembord</string>
     <string name="msg_about">Bedankt voor uw download en ervaring ~ \n Als u problemen ondervindt, zal uw feedback worden gewaardeerd</string>
-
+    <string name="no_app_found">app niet gevonden</string>
+    <string name="error">fout:%s</string>
+    <string name="share_text">Hé, ga%s downloaden</string>
+    <string name="invite_via">Uitnodigen via</string>
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">partido de ladrillo</string>
+    <string name="app_name">Tetris</string>
     <string name="score">Fracción</string>
     <string name="clear">Claro</string>
     <string name="level">Cantidad</string>
@@ -11,4 +11,8 @@
     <string name="share">Copropiedad</string>
     <string name="msg_link_has_been_copyed">Enlace de aplicación copiado al portapapeles</string>
     <string name="msg_about">Gracias por su experiencia de descarga.</string>
+    <string name="no_app_found">No se puede encontrar la aplicación</string>
+    <string name="error">Error:% s</string>
+    <string name="share_text">Vaya a% s para descargar% s</string>
+    <string name="invite_via">Por invitación</string>
 </resources>
